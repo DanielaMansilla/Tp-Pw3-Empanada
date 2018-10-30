@@ -1,0 +1,33 @@
+﻿
+@{
+    Layout = null;
+}
+@{
+    ViewBag.Title = "Agregar";
+}
+@model Pedido
+<h2>Agregar Pedido desde cero</h2>
+
+<form action="/Pedidos/Iniciar" method="Post">
+
+    Nombre Negocio: @Html.TextBoxFor(p => p.NombreNegocio)
+    <br />
+    Descripcion: @Html.TextBoxFor(p => p.Descripcion)
+    <br />
+    Precio por unidad: @Html.TextBoxFor(p => p.PrecioUnidad)
+    <br />
+    Precio por docena: @Html.TextBoxFor(p => p.PrecioDocena)
+    <br />
+    Gustos de empanadas disponibles: @Html.DropDownListFor(p => p.GustoEmpanada, new SelectList(ViewBag.ListaGusto, "IdGustoEmpanada", "Nombre"))
+    <br />
+    @*Invitados:  @Html.DropDownListFor(p => p.InvitacionPedido, new SelectList(ViewBag.ListaInvitacion, "IdInvitacionPedido", "Usuario"))*@
+   
+
+    <input type="submit" text="Inciar pedido" />
+
+</form>
+
+
+
+
+

@@ -1,0 +1,45 @@
+﻿
+@{
+                /**/
+
+                ViewBag.Title = "Lista";
+}
+
+<h2>Lista</h2>
+@{
+    ViewBag.Title = "Listado";
+}
+
+@model List<Pedido>
+
+<table border="1">
+    <tr>
+        <th>Id</th>
+        <th>Nombre del negocio</th>
+        <th>Descripcion</th>
+        <th>Precio por unidad</th>
+        <th>Precio por docena</th>
+        <th>Gustos de empanadas disponibles</th>
+        <th>Invitados</th>
+        <th>Eliminar</th>
+        <th>Modificar</th>
+    </tr>
+    @foreach (Pedido p in Model)
+    {
+        <tr>
+            <td>@p.IdPedido</td>
+            <td>@p.NombreNegocio</td>
+            <td>@p.Descripcion</td>
+            <td>@p.PrecioUnidad</td>
+            <td>@p.PrecioDocena</td>
+            <td>@p.GustoEmpanada</td>
+            <td>@p.InvitacionPedido/td>
+            <td></td>
+
+            <td><a href="/Pedidos/Eliminar/@p.IdPedido"> Eliminar</a></td>
+
+            <td>@Html.ActionLink("Modificar", "Modificar", new { Id = p.IdPedido })</td>
+        </tr>
+    }
+</table>
+<button><a href="/Pedidos/Iniciar/"> Agregar</a></button>
