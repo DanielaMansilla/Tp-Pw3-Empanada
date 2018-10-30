@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2018_2C_TP</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,700%7CCabin:400%7CDancing+Script" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="~/Content/owl.carousel.css" />
+    <link type="text/css" rel="stylesheet" href="~/Content/owl.theme.default.css" />
+
+    <link rel="stylesheet" href="~/Content/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="~/Content/style.css" />
+</head>
+<body>
+
+    @RenderBody()
+    <footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <span class="copyright">Copyright <i class="fa fa-heart-o" aria-hidden="true"></i> Grupo Web 3</span>
+                </div>
+                <div class="col-md-6">
+                    <nav class="footer-nav">
+                        <a href="#">Lista de Pedidos</a>
+                        <a href="#">Iniciar Pedido</a>
+                        <a href="#">Logout</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="preloader">
+        <div class="preloader">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <script type="text/javascript" src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/main.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

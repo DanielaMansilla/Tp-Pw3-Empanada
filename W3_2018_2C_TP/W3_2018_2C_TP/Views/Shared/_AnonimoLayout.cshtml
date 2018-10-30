@@ -1,0 +1,33 @@
+﻿@{
+    Layout = "~/Views/Shared/_BaseLayout.cshtml";
+}
+
+<header id="header">
+    <div id="top-nav">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html"><img src="~/Imagenes/logo.png" alt="logo"></a>
+            </div>
+            <button class="navbar-toggle">
+                <span></span>
+            </button>
+            <ul class="social-nav">
+                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+<div class="banner-area">
+    <div class="bg-image bg-parallax overlay" style="background-image:url(../../Imagenes/background01.jpg)"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2 class="white-text title">Empanadas Delivery - Iniciar Sesión</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+@RenderBody()
