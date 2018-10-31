@@ -12,8 +12,11 @@ namespace W3_2018_2C_TP.Servicios
 
         public void Agregar(Pedido p)
         {
-            //p.FechaCreacion = DateTime.Now.ToString("dd/MM/yyyy");
-
+            var estado = Context.EstadoPedido.FirstOrDefault(e => e.IdEstadoPedido == 1);
+            var user = Context.Usuario.FirstOrDefault(u => u.IdUsuario == 1);
+            p.FechaCreacion = DateTime.Now ;
+            p.EstadoPedido = estado;
+            p.Usuario = user;
             Context.Pedido.Add(p);
             Context.SaveChanges();
         }
