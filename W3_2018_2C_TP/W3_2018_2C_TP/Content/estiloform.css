@@ -1,0 +1,16 @@
+﻿body {
+}
+.fondo_formu {
+    max-width: 60%;
+    background-color: gainsboro;
+    font-size: larger;
+    box-shadow: #808080 10px 10px 20px -3px;
+    margin: auto;
+}
+
+.recuadre {
+    padding: 20px;
+}
+.titulo1{
+    text-align: center;
+}

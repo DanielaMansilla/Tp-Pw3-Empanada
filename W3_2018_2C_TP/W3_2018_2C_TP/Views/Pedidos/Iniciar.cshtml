@@ -1,31 +1,76 @@
-﻿
-@{
-    Layout = null;
+﻿@{
+    Layout = "~/Views/Shared/_BaseLayout.cshtml";
 }
 @{
     ViewBag.Title = "Agregar";
 }
 @model Pedido
-<h2>Agregar Pedido desde cero</h2>
+<h2 class="titulo1">Agregar Pedido desde cero</h2>
+<div class="fondo_formu">
+    <div class="recuadre">
 
-<form action="/Pedidos/Iniciar" method="Post">
+        <form action="/Pedidos/Iniciar" method="Post" autocomplete="off">
+            <table>
+                <tr>
+                    <th>
+                        Nombre Negocio:
+                    </th>
+                    <th>
+                        @Html.TextBoxFor(p => p.NombreNegocio)
 
-    Nombre Negocio: @Html.TextBoxFor(p => p.NombreNegocio)
-    <br />
-    Descripcion: @Html.TextBoxFor(p => p.Descripcion)
-    <br />
-    Precio por unidad: @Html.TextBoxFor(p => p.PrecioUnidad)
-    <br />
-    Precio por docena: @Html.TextBoxFor(p => p.PrecioDocena)
-    <br />
-    Gustos de empanadas disponibles: @Html.DropDownListFor(p => p.GustoEmpanada, new SelectList(ViewBag.ListaGusto, "IdGustoEmpanada", "Nombre"))
-    <br />
-    @*Invitados:  @Html.DropDownListFor(p => p.InvitacionPedido, new SelectList(ViewBag.ListaInvitacion, "IdInvitacionPedido", "Usuario"))*@
-   
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Descripcion:
+                    </th>
+                    <th>
+                        @Html.TextBoxFor(p => p.Descripcion)
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Precio por unidad:
+                    </th>
+                    <th>
+                        @Html.TextBoxFor(p => p.PrecioUnidad)
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Precio por docena:
+                    </th>
+                    <th>
+                        @Html.TextBoxFor(p => p.PrecioDocena)
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Gustos de empanadas disponibles:
+                    </th>
+                    <th>
+                        @Html.DropDownListFor(p => p.GustoEmpanada, new SelectList(ViewBag.ListaGusto, "IdGustoEmpanada", "Nombre"))
+                    </th>
+                </tr>
 
-    <input type="submit" text="Inciar pedido" />
+                @*Invitados:  @Html.DropDownListFor(p => p.InvitacionPedido, new SelectList(ViewBag.ListaInvitacion, "IdInvitacionPedido", "Usuario"))*@
+            </table>
 
-</form>
+            <input type="submit" text="Inciar pedido" />
+
+        </form>
+  
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
 
 
 
