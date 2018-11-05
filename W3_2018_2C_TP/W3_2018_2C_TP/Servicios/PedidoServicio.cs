@@ -30,6 +30,12 @@ namespace W3_2018_2C_TP.Servicios
             return Context.Pedido.ToList();
         }
 
+        //Creo metodo que ordena por fecha de forma descendente los pedidos
+        public List<Pedido> ListarDescendente()
+        {
+            return Context.Pedido.OrderByDescending(p => p.FechaCreacion).ToList();
+        }
+
 
         public void Eliminar(int id)
         {
@@ -44,7 +50,7 @@ namespace W3_2018_2C_TP.Servicios
             return Context.Pedido.FirstOrDefault(pedido => pedido.IdPedido == id);
         }
 
-        public void Modificar(Pedido pedido)
+        public void Editar(Pedido pedido)
         {
             Pedido pedidoModificar = Context.Pedido.FirstOrDefault(o => o.IdPedido == pedido.IdPedido);
 

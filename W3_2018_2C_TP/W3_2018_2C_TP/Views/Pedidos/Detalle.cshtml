@@ -3,5 +3,26 @@
     ViewBag.Title = "Detalle";
 }
 
+@model Pedido
+
 <h2>Pedidos Detalle</h2>
+
+<p>
+    @Html.LabelFor(o => o.NombreNegocio) @Html.Raw(" : ") @Model.NombreNegocio
+</p>
+<p>
+    @Html.LabelFor(o => o.Usuario.Email) @Html.Raw(" : ") @Model.Usuario.Email
+</p>
+<p>
+    @Html.LabelFor(o => o.Descripcion) @Html.Raw(" : ") @Model.Descripcion
+</p>
+<p>
+    @Html.LabelFor(o => o.PrecioUnidad) @Html.Raw(" : ") @Model.PrecioUnidad
+</p>
+<p>
+    @Html.LabelFor(o => o.PrecioDocena) @Html.Raw(" : ") @Model.PrecioDocena
+</p>
+<p>
+    @Html.LabelFor(o => o.FechaCreacion) @Html.Raw(" : ") @Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
+</p>
 

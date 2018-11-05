@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using W3_2018_2C_TP.Models.Enums;
 using W3_2018_2C_TP.Servicios;
 
 namespace W3_2018_2C_TP.Controllers
@@ -11,6 +12,7 @@ namespace W3_2018_2C_TP.Controllers
     {
 
         PedidoServicio pedidoServicio = new PedidoServicio();
+
         [HttpGet]
         public ActionResult Iniciar()
         {
@@ -49,13 +51,14 @@ namespace W3_2018_2C_TP.Controllers
             //c)pedido iniciado
             return View();
         }
+
         [HttpGet]
         public ActionResult Lista()
         {
-
-            List<Pedido> pedidos = pedidoServicio.Listar();
+            List<Pedido> pedidos = pedidoServicio.ListarDescendente();
             return View(pedidos);
         }
+
         [HttpGet]
         public ActionResult Editar(int id)
         {
@@ -64,15 +67,23 @@ namespace W3_2018_2C_TP.Controllers
         }
 
         [HttpPost]
-        public ActionResult Modificar(Pedido pedido)
+        public ActionResult Editar(Pedido pedido)
         {
-            pedidoServicio.Modificar(pedido);
+            pedidoServicio.Editar(pedido);
             return RedirectToAction("Lista", "Pedidos");
 
         }
+
+        [HttpGet]
         public ActionResult Eliminar(int id)
         {
-            pedidoServicio.Eliminar(id);
+            return View(pedidoServicio.ObtenerPorId(id));
+        }
+
+        [HttpPost]
+        public ActionResult Eliminar(Pedido p)
+        {
+            pedidoServicio.Eliminar(p.IdPedido);
             return RedirectToAction("Lista", "Pedidos");
         }
 
@@ -81,9 +92,21 @@ namespace W3_2018_2C_TP.Controllers
             return View();
         }
 
-        public ActionResult Detalle()
+        [HttpGet]
+        public ActionResult Detalle(int id)
         {
-            return View();
+            Pedido p = pedidoServicio.ObtenerPorId(id);
+
+            if (p.EstadoPedido.Nombre == "Cerrado" || p.Usuario.Rol == Rol.Invitado)
+            {
+                return View(p);
+            }
+
+            else
+            {
+                //Lo reenvio a la lista de pedidos
+                return RedirectToAction("Lista");
+            }
         }
     }
   
