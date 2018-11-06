@@ -36,6 +36,11 @@ namespace W3_2018_2C_TP.Servicios
             return Context.Pedido.OrderByDescending(p => p.FechaCreacion).ToList();
         }
 
+        public List<Pedido> obtenerListaPorUsuario(Usuario user)
+        {
+            var estado = Context.Pedido.Where(c => c.IdUsuarioResponsable == user.IdUsuario).ToList();
+            return estado;
+        }
 
         public void Eliminar(int id)
         {

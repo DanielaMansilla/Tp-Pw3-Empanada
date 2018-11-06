@@ -188,11 +188,17 @@
     <Compile Include="InvitacionPedidoGustoEmpanadaUsuario.cs">
       <DependentUpon>EmpanadasEntityModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Enums\ReEnviarInvitacion.cs" />
+    <Compile Include="Models\Enums\Rol.cs" />
+    <Compile Include="Models\Extensions\Pedido.cs" />
+    <Compile Include="Models\Extensions\Usuario.cs" />
+    <Compile Include="Models\Metadata\PedidoMetadata.cs" />
     <Compile Include="Pedido.cs">
       <DependentUpon>EmpanadasEntityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicios\PedidoServicio.cs" />
+    <Compile Include="Servicios\UsuarioServicio.cs" />
     <Compile Include="Usuario.cs">
       <DependentUpon>EmpanadasEntityModel.tt</DependentUpon>
     </Compile>
@@ -282,7 +288,6 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Shared\_AnonimoLayout.cshtml" />
     <Content Include="Views\Shared\_BaseLayout.cshtml" />
     <Content Include="Views\Shared\_UsuarioLayout.cshtml" />
@@ -296,7 +301,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
