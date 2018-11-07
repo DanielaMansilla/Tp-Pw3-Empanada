@@ -5,63 +5,75 @@
     ViewBag.Title = "Agregar";
 }
 @model Pedido
-<h2 class="titulo1">Agregar Pedido desde cero</h2>
-<div class="fondo_formu">
-    <div class="recuadre">
 
-        <form action="/Pedidos/Iniciar" method="Post" autocomplete="off">
-            <table>
-                <tr>
-                    <th>
-                        Nombre Negocio:
-                    </th>
-                    <th>
-                        @Html.TextBoxFor(p => p.NombreNegocio)
+<form action="/Pedidos/Iniciar" method="Post" autocomplete="off">
+    @*@using (Html.BeginForm("Pedidos", "Iniciar", FormMethod.Post))
+        {*@
+    <div class="container">
+        <h2>Usted esta a punto de iniciar un pedido</h2>
+        <hr />
 
-                    </th>
-                </tr>
-                <tr>
-                    <th>
-                        Descripcion:
-                    </th>
-                    <th>
-                        @Html.TextBoxFor(p => p.Descripcion)
-                    </th>
-                </tr>
-                <tr>
-                    <th>
-                        Precio por unidad:
-                    </th>
-                    <th>
-                        @Html.TextBoxFor(p => p.PrecioUnidad)
-                    </th>
-                </tr>
-                <tr>
-                    <th>
-                        Precio por docena:
-                    </th>
-                    <th>
-                        @Html.TextBoxFor(p => p.PrecioDocena)
-                    </th>
-                </tr>
-                <tr>
-                    <th>
-                        Gustos de empanadas disponibles:
-                    </th>
-                    <th>
-                        @Html.DropDownListFor(p => p.GustoEmpanada, new SelectList(ViewBag.ListaGusto, "IdGustoEmpanada", "Nombre"))
-                    </th>
-                </tr>
+        @Html.HiddenFor(p => p.IdPedido)
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger" role="alert">
+                @Html.ValidationSummary(false)
+            </div>
+        }
+        <div class="card">
+            <img class="card-img-top card-detail-max">
+            <div class="card-body">
+                <h4 class="card-title"></h4>
+                <p class="card-text">
+                    <div class="form-group">
+                        @Html.LabelFor(p => p.NombreNegocio)
+                        @Html.TextBoxFor(p => p.NombreNegocio, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Descripcion)
+                        @Html.TextAreaFor(x => x.Descripcion, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(p => p.PrecioUnidad)
+                        @Html.TextBoxFor(p => p.PrecioUnidad, new { @class = "form-control" })
+                    </div>
 
-                @*Invitados:  @Html.DropDownListFor(p => p.InvitacionPedido, new SelectList(ViewBag.ListaInvitacion, "IdInvitacionPedido", "Usuario"))*@
-            </table>
+                    <div class="form-group">
+                        @Html.LabelFor(p => p.PrecioDocena)
+                        @Html.TextBoxFor(p => p.PrecioDocena, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
 
-            <input type="submit" text="Inciar pedido" />
+                        @*@Html.DropDownListFor(p => p.SelectedValues, new MultiSelectList(p.GetCategoryList().OrderBy(c => c.Value), "Key", "Value"), "Select Category", new { @class = "chzn-select form-control", multiple = "multiple" })*@
 
-        </form>
-  
+                        @Html.DropDownListFor(p => p.GustoEmpanada, new SelectList(ViewBag.ListaGusto, "IdGustoEmpanada", "Nombre", new { type = "multiple" }))
+                    </div>
+                    <div class="form-group">
+                        @*Invitados:  @Html.DropDownListFor(p => p.InvitacionPedido, new SelectList(ViewBag.ListaInvitacion, "IdInvitacionPedido", "Usuario"))*@
+                    </div>
+                </p>
+                <input type="submit" text="Inciar pedido" />
+            </div>
+        </div>
     </div>
-</div>
+
+
+    @*}*@
+
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
