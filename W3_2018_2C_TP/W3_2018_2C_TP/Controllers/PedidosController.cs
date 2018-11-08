@@ -55,6 +55,10 @@ namespace W3_2018_2C_TP.Controllers
         [HttpGet]
         public ActionResult Lista()
         {
+            if (Session["EliminarMensaje"] != null)
+            {
+                ViewBag.Mensaje = Session["EliminarMensaje"].ToString();
+            }
             List<Pedido> pedidos = pedidoServicio.ListarDescendente();
             return View(pedidos);
         }
@@ -77,13 +81,15 @@ namespace W3_2018_2C_TP.Controllers
         [HttpGet]
         public ActionResult Eliminar(int id)
         {
+            ViewBag.Cantidad = pedidoServicio.ObtenerInvitacionesConfirmadas(id);
             return View(pedidoServicio.ObtenerPorId(id));
         }
 
         [HttpPost]
         public ActionResult Eliminar(Pedido p)
         {
-            pedidoServicio.Eliminar(p.IdPedido);
+            Session["EliminarMensaje"] = "Pedido " + p.NombreNegocio + " ha sido eliminado exitosamente";
+            pedidoServicio.Eliminar(p.IdPedido);            
             return RedirectToAction("Lista", "Pedidos");
         }
 

@@ -44,7 +44,19 @@ namespace W3_2018_2C_TP.Servicios
 
         public void Eliminar(int id)
         {
+
+            var invitaciones = Context.InvitacionPedido.Where(i => i.IdPedido == id).ToList();
+            Context.InvitacionPedido.RemoveRange(invitaciones);
+            Context.SaveChanges();
+
+            var gustosPedido = Context.InvitacionPedidoGustoEmpanadaUsuario.Where(i => i.IdPedido == id).ToList();
+            Context.InvitacionPedidoGustoEmpanadaUsuario.RemoveRange(gustosPedido);
+            Context.SaveChanges();
+
             Pedido pedidoEliminar = Context.Pedido.FirstOrDefault(pedido => pedido.IdPedido == id);
+
+            pedidoEliminar.GustoEmpanada.Clear();
+
             Context.Pedido.Remove(pedidoEliminar);
             Context.SaveChanges();
         }
@@ -53,6 +65,12 @@ namespace W3_2018_2C_TP.Servicios
         public Pedido ObtenerPorId(int id)
         {
             return Context.Pedido.FirstOrDefault(pedido => pedido.IdPedido == id);
+        }
+
+        public int ObtenerInvitacionesConfirmadas(int id)
+        {
+            return Context.InvitacionPedido.Where(c => c.IdPedido == id)
+                .Where(c => c.Completado == true).Count();
         }
 
         public void Editar(Pedido pedido)
