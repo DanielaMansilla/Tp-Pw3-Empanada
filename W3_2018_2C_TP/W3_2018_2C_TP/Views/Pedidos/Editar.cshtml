@@ -3,5 +3,75 @@
     ViewBag.Title = "Editar";
 }
 
-<h2>Pedidos Editar</h2>
+@model Pedido
+
+<h2>Edici&oacute;n de Pedido</h2>
+
+@Html.BeginForm("Editar", "Pedidos", FormMethod.Post)
+{
+
+    <div>@Html.HiddenFor(p => p.IdPedido)</div>
+    <div>
+        @Html.LabelFor(p => p.NombreNegocio)
+        @Html.Raw(": ")
+        @Html.TextBoxFor(p => p.NombreNegocio)
+    </div>
+    <div>
+        @Html.LabelFor(p => p.Descripcion)
+        @Html.Raw(": ")
+        @Html.TextBoxFor(p => p.Descripcion)
+    </div>
+    <div>
+        @Html.LabelFor(p => p.PrecioUnidad)
+        @Html.Raw(": ")
+        @Html.TextBoxFor(p => p.PrecioUnidad, new { type = "number" })
+    </div>
+    <div>
+        @Html.LabelFor(p => p.PrecioDocena)
+        @Html.Raw(": ")
+        @Html.TextBoxFor(p => p.PrecioDocena, new { type = "number" })
+    </div>
+    <div>
+        @Html.LabelFor(p => p.GustoEmpanada)
+        @Html.Raw(": ")
+        @Html.DropDownListFor(p => p.GustoEmpanada, new SelectList(ViewBag.ListaGusto, "IdGustoEmpanada", "Nombre", new { type = "multiple" }))
+    </div>
+    <div>
+        @Html.Label("Email Usuarios Invitados: ")
+        <select name="IdUsuario">
+            @foreach (Usuario u in ViewBag.UsuariosInvitados)
+            {
+                if (u.InvitacionPedido.FirstOrDefault(i => i.IdPedido == Model.IdPedido).Completado)
+                {
+                    <option value="@u.IdUsuario">@u.Email @Html.Raw("SI")</option>
+                }
+                else
+                {
+                    <option value="@u.IdUsuario">@u.Email @Html.Raw("NO")</option>
+                }
+            }
+        </select>
+    </div>
+
+    <div>
+        @Html.ValidationMessageFor(p => p.NombreNegocio)
+        @Html.ValidationMessageFor(p => p.PrecioUnidad)
+        @Html.ValidationMessageFor(p => p.PrecioDocena)
+        @Html.ValidationMessageFor(p => p.GustoEmpanada)
+    </div>
+
+    <div>
+        @Html.Label("Re-enviar Invitación: ")
+        <select name="IdReEnviarInvitacion" id="IdReEnviarInvitacion">
+            <option value="0">A Nadie</option>
+            <option value="1">Re-enviar Incitaci&oacute;n a Todos</option>
+            <option value="2">Enviar s&oacute;lo a los Nuevos”</option>
+            <option value="3">Re-enviar s&oacute;lo a los que no eligieron gustos”</option>
+        </select>
+        <br />
+        <a href="/Pedidos/Editar/">
+            <button type="button" class="btn btn-dark">Guardar</button>
+        </a>
+    </div>
+}
 

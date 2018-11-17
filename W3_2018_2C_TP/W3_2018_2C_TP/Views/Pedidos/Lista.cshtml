@@ -22,10 +22,18 @@
                 <td>@p.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</td>
                 <td>@p.NombreNegocio</td>
                 <td>@p.EstadoPedido.Nombre</td>
-                <td></td>
-                <!--<td>p.Usuario.Rol.ToString()</td>-->
                 <td>
-                    @Html.ActionLink("Editar", "Modificar", new { Id = p.IdPedido })
+                    @if (p.IdUsuarioResponsable == ViewBag.UsuarioLogueado)
+                    {
+                        @Html.Raw("Responsable")
+                    }
+                    else
+                    {
+                        @Html.Raw("Invitado")
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Editar", new { Id = p.IdPedido })
                     @Html.Raw(" - ")
                     @Html.ActionLink("Elegir Gustos", "Elegir", new { Id = p.IdPedido })
                     @Html.Raw(" - ")

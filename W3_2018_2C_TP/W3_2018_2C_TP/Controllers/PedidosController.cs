@@ -12,6 +12,7 @@ namespace W3_2018_2C_TP.Controllers
     {
 
         PedidoServicio pedidoServicio = new PedidoServicio();
+        UsuarioServicio usuarioServicio = new UsuarioServicio();
 
         [HttpGet]
         public ActionResult Iniciar()
@@ -55,23 +56,52 @@ namespace W3_2018_2C_TP.Controllers
         [HttpGet]
         public ActionResult Lista()
         {
-            List<Pedido> pedidos = pedidoServicio.ListarDescendente();
+            List<Pedido> pedidos = pedidoServicio.Listar();
+
+            return View(pedidos);
+        }
+
+        [HttpPost]
+        public ActionResult Lista(int idUsuario)
+        {
+            List<Pedido> pedidos = pedidoServicio.ListarPedidosResponsableInvitado(idUsuario);
+
+            ViewBag.UsuarioLogueado = usuarioServicio.UsuarioLogueado(idUsuario).IdUsuario;
+
             return View(pedidos);
         }
 
         [HttpGet]
-        public ActionResult Editar(int id)
+        public ActionResult Editar(int idPedido)
         {
-            Pedido pedidoModificar = pedidoServicio.ObtenerPorId(id);
-            return View(pedidoModificar);
+            Pedido pedidoEditar = pedidoServicio.ObtenerPorId(idPedido);
+
+            if (pedidoEditar.EstadoPedido.Nombre == "Cerrado")
+            {
+                return RedirectToAction("Detalle", "Pedidos", pedidoEditar.IdPedido);
+            }
+            else
+            {
+                //Lleno el ddl con los gustos por pedido
+                ViewBag.ListaGusto = pedidoServicio.ObtenerGustosPorPedido(pedidoEditar.IdPedido);
+                ViewBag.UsuariosInvitados = pedidoServicio.ObtenerUsuariosInvitados(pedidoEditar.IdPedido);
+                
+                return View(pedidoEditar);
+            }
         }
 
         [HttpPost]
         public ActionResult Editar(Pedido pedido)
         {
-            pedidoServicio.Editar(pedido);
-            return RedirectToAction("Lista", "Pedidos");
-
+            if (ModelState.IsValid)
+            {
+                pedidoServicio.Editar(pedido);
+                return RedirectToAction("Lista", "Pedidos");
+            }
+            else
+            {
+                return View(pedido.IdPedido);
+            }
         }
 
         [HttpGet]
@@ -93,11 +123,13 @@ namespace W3_2018_2C_TP.Controllers
         }
 
         [HttpGet]
-        public ActionResult Detalle(int id)
+        public ActionResult Detalle(int idPedido)
         {
-            Pedido p = pedidoServicio.ObtenerPorId(id);
+            Pedido p = pedidoServicio.ObtenerPorId(idPedido);
 
-            if (p.EstadoPedido.Nombre == "Cerrado" || p.Usuario.Rol == Rol.Invitado)
+            ViewBag.UsuarioLogueado = usuarioServicio.UsuarioLogueado(p.IdUsuarioResponsable).IdUsuario;
+
+            if (p.EstadoPedido.Nombre == "Cerrado" || p.Usuario.IdUsuario == usuarioServicio.UsuarioLogueado(p.IdUsuarioResponsable).IdUsuario)
             {
                 return View(p);
             }

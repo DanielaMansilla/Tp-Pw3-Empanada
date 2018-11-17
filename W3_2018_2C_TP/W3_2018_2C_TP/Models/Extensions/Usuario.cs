@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using W3_2018_2C_TP.Models.Enums;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace W3_2018_2C_TP
 {
+    [MetadataType(typeof(UsuarioMetadata))]
     public partial class Usuario
     {
-        public Rol Rol { get; set; }
     }
 }
