@@ -12,11 +12,12 @@ namespace W3_2018_2C_TP.Controllers
     public class PedidosController : Controller
     {
        
+        //Se instancia los servicios
         private readonly PedidoServicio _servicioPedido = new PedidoServicio();
         private readonly GustoEmpanadaServicio _servicioGustoEmpanada = new GustoEmpanadaServicio();
         private readonly InvitacionPedidoServicio _servicioInvitacionPedido = new InvitacionPedidoServicio();
         private readonly UsuarioServicio _servicioUsuario = new UsuarioServicio();
-        //private readonly EmailServicio _servicioEmail = new EmailServicio();
+        private readonly EmailServicio _servicioEmail = new EmailServicio();
 
         [HttpGet]
         public ActionResult Iniciar()
@@ -51,16 +52,12 @@ namespace W3_2018_2C_TP.Controllers
         [HttpGet]
         public ActionResult Iniciado()
         {
-            //iniciar pedido
-            //c)pedido iniciado
             return View();
         }
 
         [HttpPost]
         public ActionResult Iniciado(int idPedido)
         {
-            //iniciar pedido
-            //c)pedido iniciado
             return View();
         }
 

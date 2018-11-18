@@ -27,19 +27,24 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Pedido.NombreNegocio)
                         @Html.TextBoxFor(model => model.Pedido.NombreNegocio, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Pedido.NombreNegocio, "", new { @class = "text-danger" })
+
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.Pedido.Descripcion)
                         @Html.TextAreaFor(model => model.Pedido.Descripcion, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Pedido.Descripcion, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.Pedido.PrecioUnidad)
                         @Html.TextBoxFor(model => model.Pedido.PrecioUnidad, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Pedido.PrecioUnidad, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.Pedido.PrecioDocena)
                         @Html.TextBoxFor(model => model.Pedido.PrecioDocena, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Pedido.PrecioDocena, "", new { @class = "text-danger" })
                     </div>
 
 
