@@ -25,6 +25,7 @@ namespace W3_2018_2C_TP.Servicios
         public Pedido CrearPedidoDesdeCero(PedidoGustosEmpanadasDTO pge)
         {
             var pedido = pge.Pedido;
+          
             pedido.FechaCreacion = DateTime.Now;
             //pedido.IdUsuarioResponsable = Sesion.IdUsuario;
             //pedido.IdEstadoPedido = (int)EstadosPedido.Abierto;

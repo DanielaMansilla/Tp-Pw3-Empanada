@@ -6,9 +6,8 @@
 }
 @using W3_2018_2C_TP.Models
 @model W3_2018_2C_TP.Models.Dto.PedidoGustosEmpanadasDTO
-<form action="/Pedidos/Iniciar" method="Post" autocomplete="off">
-    @*@using (Html.BeginForm("Pedidos", "Iniciar", FormMethod.Post))
-        {*@
+<form action="/Pedidos/CrearPedido" method="Post" autocomplete="off">
+  
     <div class="container">
         <h2>Usted esta a punto de iniciar un pedido</h2>
         <hr />
@@ -43,50 +42,50 @@
                         @Html.TextBoxFor(model => model.Pedido.PrecioDocena, new { @class = "form-control" })
                     </div>
 
-                   
+
                 </p>
-                <input type="submit" text="Inciar pedido" />
+                <div class="col-md-4">
+                    <div class="recuadro box-shadow bg-white">
+                        <h5>Elija los gustos</h5>
+                        <hr />
+                        <table class="table m-0 w-100">
+                            <tr>
+                                <th>Gusto</th>
+                                <th class="th-check-column text-default-grid vertical-middle centrar">
+                                    <div class="check-column">
+                                        <input type="checkbox" id="selectAll">
+                                        <label for="selectAll"></label>
+                                    </div>
+                                </th>
+                            </tr>
+                            @for (int i = 0; i < Model.GustosDisponibles.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        <p> @Model.GustosDisponibles[i].Nombre </p>
+                                    </td>
+                                    <td class="th-check-column text-default-grid vertical-middle centrar">
+                                        <div class="check-column">
+                                            @Html.HiddenFor(p => p.GustosDisponibles[i].Id)
+                                            @Html.HiddenFor(p => p.GustosDisponibles[i].Nombre)
+                                            @Html.CheckBoxFor(p => p.GustosDisponibles[i].IsSelected)
+                                            @Html.LabelFor(p => p.GustosDisponibles[i].IsSelected, " ")
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                        <span id="textValidacionGustos" class="field-validation-error text-danger text-center d-none mt-2 d-inline-block"></span>
+                    </div>
+                </div>
+                <div class="col-12 text-right mt-3">
+                    <input type="reset" value="Cancelar" id="btnCancelar" class="btn btn-cancelar mr-2" />
+                    <input type="submit" value="Iniciar" id="btnIniciar" class="btn btn-aceptar" />
+                </div>
+               
             </div>
         </div>
     </div>
-
-
-    <div class="col-md-4">
-        <div class="recuadro box-shadow bg-white">
-            <h5>2. Seleccione los gustos que podrán elegirse</h5>
-            <hr />
-            <table class="table m-0 w-100">
-                <tr>
-                    <th>Gusto</th>
-                    <th class="th-check-column text-default-grid vertical-middle centrar">
-                        <div class="check-column">
-                            <input type="checkbox" id="selectAll">
-                            <label for="selectAll"></label>
-                        </div>
-                    </th>
-                </tr>
-                @for (int i = 0; i < Model.GustosDisponibles.Count; i++)
-                {
-                    <tr>
-                        <td>
-                            <p> @Model.GustosDisponibles[i].Nombre </p>
-                        </td>
-                        <td class="th-check-column text-default-grid vertical-middle centrar">
-                            <div class="check-column">
-                                @Html.HiddenFor(p => p.GustosDisponibles[i].Id)
-                                @Html.HiddenFor(p => p.GustosDisponibles[i].Nombre)
-                                @Html.CheckBoxFor(p => p.GustosDisponibles[i].IsSelected)
-                                @Html.LabelFor(p => p.GustosDisponibles[i].IsSelected, " ")
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </table>
-            <span id="textValidacionGustos" class="field-validation-error text-danger text-center d-none mt-2 d-inline-block"></span>
-        </div>
-    </div>
-
-
 </form>
 
 

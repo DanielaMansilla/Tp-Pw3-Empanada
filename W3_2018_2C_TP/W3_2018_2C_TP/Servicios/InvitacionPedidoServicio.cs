@@ -64,88 +64,89 @@ namespace W3_2018_2C_TP.Servicios
         public void Modificar(int idPedido, List<UsuarioDTO> invitados, int accion)
         {
             var invitacionPedidoModel = Contexto.InvitacionPedido.Where(ip => ip.IdPedido == idPedido).ToList();
-            var invitadosModel = GetInvitados(invitados, Sesion.IdUsuario);
-            foreach (var invitacionPedido in invitacionPedidoModel)
-            {
-                if (!invitadosModel.Contains(invitacionPedido.IdUsuario))
-                    Contexto.InvitacionPedido.Remove(invitacionPedido);
-            }
+            //var invitadosModel = GetInvitados(invitados, Sesion.IdUsuario);
+            //foreach (var invitacionPedido in invitacionPedidoModel)
+            //{
+            //    if (!invitadosModel.Contains(invitacionPedido.IdUsuario))
+            //        Contexto.InvitacionPedido.Remove(invitacionPedido);
+            //}
             var nuevosInvitados = new List<int>();
-            foreach (var invitado in invitadosModel)
-            {
-                if (!invitacionPedidoModel.Select(ip => ip.IdUsuario).Contains(invitado))
-                {
-                    var nuevaInvitacionPedido = new InvitacionPedido
-                    {
-                        IdUsuario = invitado,
-                        IdPedido = idPedido,
-                        Token = Guid.NewGuid(),
-                        Completado = false
-                    };
-                    Contexto.InvitacionPedido.Add(nuevaInvitacionPedido);
-                    nuevosInvitados.Add(nuevaInvitacionPedido.IdUsuario);
-                }
-            }
-        //    ServicioEmail servicioMail = new ServicioEmail();
-        //    switch (accion)
-        //    {
-        //        case (int)EmailAcciones.ANadie:
-        //            break;
-        //        case (int)EmailAcciones.EnviarSoloALosNuevos:
-        //            servicioMail.ArmarMailInicioPedido(nuevosInvitados, idPedido);
-        //            break;
-        //        case (int)EmailAcciones.ReEnviarInvitacionATodos:
-        //            var todosLosInivitados = Contexto.InvitacionPedido.Where(ip => ip.IdPedido == idPedido)
-        //                .Select(i => i.IdUsuario)
-        //                .ToList();
-        //            servicioMail.ArmarMailInicioPedido(todosLosInivitados, idPedido);
-        //            break;
-        //        case (int)EmailAcciones.ReEnviarSoloALosQueNoEligieronGustos:
-        //            var invitadosSinGustos = Contexto.InvitacionPedido.Where(ip => ip.IdPedido == idPedido
-        //                                                                    && ip.Completado == false)
-        //                .Select(i => i.IdUsuario)
-        //                .ToList();
-        //            servicioMail.ArmarMailInicioPedido(invitadosSinGustos, idPedido);
-        //            break;
-        //    }
-        //    Contexto.SaveChanges();
-        //}
+            //foreach (var invitado in invitadosModel)
+            //{
+            //    if (!invitacionPedidoModel.Select(ip => ip.IdUsuario).Contains(invitado))
+            //    {
+            //        var nuevaInvitacionPedido = new InvitacionPedido
+            //        {
+            //            IdUsuario = invitado,
+            //            IdPedido = idPedido,
+            //            Token = Guid.NewGuid(),
+            //            Completado = false
+            //        };
+            //        Contexto.InvitacionPedido.Add(nuevaInvitacionPedido);
+            //        nuevosInvitados.Add(nuevaInvitacionPedido.IdUsuario);
+            //    }
+            //}
+            //    ServicioEmail servicioMail = new ServicioEmail();
+            //    switch (accion)
+            //    {
+            //        case (int)EmailAcciones.ANadie:
+            //            break;
+            //        case (int)EmailAcciones.EnviarSoloALosNuevos:
+            //            servicioMail.ArmarMailInicioPedido(nuevosInvitados, idPedido);
+            //            break;
+            //        case (int)EmailAcciones.ReEnviarInvitacionATodos:
+            //            var todosLosInivitados = Contexto.InvitacionPedido.Where(ip => ip.IdPedido == idPedido)
+            //                .Select(i => i.IdUsuario)
+            //                .ToList();
+            //            servicioMail.ArmarMailInicioPedido(todosLosInivitados, idPedido);
+            //            break;
+            //        case (int)EmailAcciones.ReEnviarSoloALosQueNoEligieronGustos:
+            //            var invitadosSinGustos = Contexto.InvitacionPedido.Where(ip => ip.IdPedido == idPedido
+            //                                                                    && ip.Completado == false)
+            //                .Select(i => i.IdUsuario)
+            //                .ToList();
+            //            servicioMail.ArmarMailInicioPedido(invitadosSinGustos, idPedido);
+            //            break;
+            //    }
+            //    Contexto.SaveChanges();
+            //}
 
-        public bool ConfirmarGustos(PedidoRequestDTO pedido)
-        {
-            try
-            {
-                var listaDeGustosPorUsuario = Contexto.InvitacionPedidoGustoEmpanadaUsuario.Where(ip => ip.IdPedido == pedido.IdPedido && ip.IdUsuario == pedido.IdUsuario).ToList();
+            //public bool ConfirmarGustos(PedidoRequestDTO pedido)
+            //{
+            //    try
+            //    {
+            //        var listaDeGustosPorUsuario = Contexto.InvitacionPedidoGustoEmpanadaUsuario.Where(ip => ip.IdPedido == pedido.IdPedido && ip.IdUsuario == pedido.IdUsuario).ToList();
 
-                foreach (InvitacionPedidoGustoEmpanadaUsuario inv in listaDeGustosPorUsuario)
-                {
-                    Contexto.InvitacionPedidoGustoEmpanadaUsuario.Remove(inv);
-                }
+            //        foreach (InvitacionPedidoGustoEmpanadaUsuario inv in listaDeGustosPorUsuario)
+            //        {
+            //            Contexto.InvitacionPedidoGustoEmpanadaUsuario.Remove(inv);
+            //        }
 
-                foreach (GustoEmpanadasCantidadDTO g in pedido.GustoEmpanadasCantidad)
-                {
+            //        foreach (GustoEmpanadasCantidadDTO g in pedido.GustoEmpanadasCantidad)
+            //        {
 
-                    if (g.Cantidad > 0)
-                    {
-                        Contexto.InvitacionPedidoGustoEmpanadaUsuario.Add(new InvitacionPedidoGustoEmpanadaUsuario
-                        {
-                            Cantidad = g.Cantidad,
-                            IdGustoEmpanada = g.IdGustoEmpanada,
-                            IdPedido = pedido.IdPedido,
-                            IdUsuario = pedido.IdUsuario,
-                        });
-                    }
+            //            if (g.Cantidad > 0)
+            //            {
+            //                Contexto.InvitacionPedidoGustoEmpanadaUsuario.Add(new InvitacionPedidoGustoEmpanadaUsuario
+            //                {
+            //                    Cantidad = g.Cantidad,
+            //                    IdGustoEmpanada = g.IdGustoEmpanada,
+            //                    IdPedido = pedido.IdPedido,
+            //                    IdUsuario = pedido.IdUsuario,
+            //                });
+            //            }
 
-                }
+            //        }
 
-                Contexto.SaveChanges();
+            //        Contexto.SaveChanges();
 
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            //        return true;
+            //    }
+            //    catch
+            //    {
+            //        return false;
+            //    }
+            //}
         }
     }
 
