@@ -83,11 +83,24 @@
                         <span id="textValidacionGustos" class="field-validation-error text-danger text-center d-none mt-2 d-inline-block"></span>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="recuadro box-shadow bg-white">
+                        <h5>3. Ingrese email de los invitados</h5>
+                        <hr />
+                        @for (int i = 0; i < Model.Invitados.Count; i++)
+                        {
+                            <input class="invitadosEditar" id="@Model.Invitados[i].Id" value="@Model.Invitados[i].Email" hidden="" />
+                        }
+                        <div id="divInvitado" class="form-group w-100">
+                            <input id="inputInvitados" data-role="tagsinput" class="form-control" type="text" placeholder="ejempl@email.com" />
+                        </div>
+                    </div>
+                </div>
                 <div class="col-12 text-right mt-3">
                     <input type="reset" value="Cancelar" id="btnCancelar" class="btn btn-cancelar mr-2" />
                     <input type="submit" value="Iniciar" id="btnIniciar" class="btn btn-aceptar" />
                 </div>
-               
+
             </div>
         </div>
     </div>
