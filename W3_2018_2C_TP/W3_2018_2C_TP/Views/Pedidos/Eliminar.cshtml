@@ -1,7 +1,33 @@
 ﻿
 @{
-    ViewBag.Title = "Eliminar";
+    Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
 }
+@model Pedido
 
-<h2>Pedidos Eliminar</h2>
+<div class="container text-center">
+    <div class="login-form">
+        <div class="main-div">
+            <div class="panel">
+                <h2>Eliminar Pedido</h2>
+            </div>
+            <div id="Login" class="col-md-12">
+                @using (Html.BeginForm("Eliminar", "Pedidos", FormMethod.Post))
+                {
+                    @Html.HiddenFor(x => x.IdPedido)
+                    <div class="form-group">
+                        <div class="row">
+                            <label>
+                                ¿Está seguro de que desea eliminar el pedido @Model.NombreNegocio ?<br />
+                                Actualmente posee @ViewBag.Cantidad invitaciones confirmadas
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input class="btn btn-danger" name="btnEliminar" id="btnEliminar" value="Eliminar" type="submit" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
 

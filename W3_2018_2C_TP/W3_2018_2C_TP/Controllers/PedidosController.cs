@@ -56,6 +56,7 @@ namespace W3_2018_2C_TP.Controllers
         [HttpGet]
         public ActionResult Lista()
         {
+<<<<<<< HEAD
             List<Pedido> pedidos = pedidoServicio.Listar();
 
             return View(pedidos);
@@ -68,6 +69,13 @@ namespace W3_2018_2C_TP.Controllers
 
             ViewBag.UsuarioLogueado = usuarioServicio.UsuarioLogueado(idUsuario).IdUsuario;
 
+=======
+            if (Session["EliminarMensaje"] != null)
+            {
+                ViewBag.Mensaje = Session["EliminarMensaje"].ToString();
+            }
+            List<Pedido> pedidos = pedidoServicio.ListarDescendente();
+>>>>>>> 1d19eb745deb66ade10678bbde3b5f04887bcc17
             return View(pedidos);
         }
 
@@ -107,13 +115,15 @@ namespace W3_2018_2C_TP.Controllers
         [HttpGet]
         public ActionResult Eliminar(int id)
         {
+            ViewBag.Cantidad = pedidoServicio.ObtenerInvitacionesConfirmadas(id);
             return View(pedidoServicio.ObtenerPorId(id));
         }
 
         [HttpPost]
         public ActionResult Eliminar(Pedido p)
         {
-            pedidoServicio.Eliminar(p.IdPedido);
+            Session["EliminarMensaje"] = "Pedido " + p.NombreNegocio + " ha sido eliminado exitosamente";
+            pedidoServicio.Eliminar(p.IdPedido);            
             return RedirectToAction("Lista", "Pedidos");
         }
 

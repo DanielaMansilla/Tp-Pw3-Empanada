@@ -5,24 +5,36 @@
 
 @model Pedido
 
-<h2>Pedidos Detalle</h2>
-
-<p>
-    @Html.LabelFor(o => o.NombreNegocio) @Html.Raw(" : ") @Model.NombreNegocio
-</p>
-<p>
-    @Html.LabelFor(o => o.Usuario.Email) @Html.Raw(" : ") @Model.Usuario.Email
-</p>
-<p>
-    @Html.LabelFor(o => o.Descripcion) @Html.Raw(" : ") @Model.Descripcion
-</p>
-<p>
-    @Html.LabelFor(o => o.PrecioUnidad) @Html.Raw(" : ") @Model.PrecioUnidad
-</p>
-<p>
-    @Html.LabelFor(o => o.PrecioDocena) @Html.Raw(" : ") @Model.PrecioDocena
-</p>
-<p>
-    @Html.LabelFor(o => o.FechaCreacion) @Html.Raw(" : ") @Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
-</p>
+<div class="container text-left">
+    <div class="login-form">
+        <div class="main-div">
+            <div class="panel">
+                <h2>Detalle Pedido</h2>
+            </div>
+            <div id="Login" class="col-md-12">
+                    <div class="row">
+                        <label>Nombre de Negocio: </label> @Model.NombreNegocio
+                    </div>
+                    <div class="row">
+                        @Html.LabelFor(o => o.Usuario.Email) @Html.Raw(" : ") @Model.Usuario.Email
+                    </div>
+                    <div class="row">
+                        @Html.LabelFor(o => o.Descripcion) @Html.Raw(" : ") @Model.Descripcion
+                    </div>
+                    <div class="row">
+                        <label>Precio por unidad: </label> @Model.PrecioUnidad
+                    </div>
+                    <div class="row">
+                        <label>Precio por docena: </label> @Model.PrecioDocena
+                    </div>
+                    <div class="row">
+                        <label>Fecha de creación</label> @Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
+                    </div>
+                    <div class="row">
+                        <input class="btn btn-danger" value="Eliminar" type="submit" />
+                    </div>                
+            </div>
+        </div>
+    </div>
+</div>
 

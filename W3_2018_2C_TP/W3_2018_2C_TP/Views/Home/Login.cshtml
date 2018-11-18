@@ -1,0 +1,37 @@
+﻿@{
+    Layout = "~/Views/Shared/_AnonimoLayout.cshtml";
+}
+
+@model Usuario
+<div class="container text-center">
+    <div class="login-form">
+        <div class="main-div">
+            <div class="panel">
+                <h2>Iniciar Sesión</h2>
+                <p>Ingrese su usuario y contraseña</p>
+            </div>
+            <div id="Login" class="col-md-12">
+                @using (Html.BeginForm("IniciarSesion", "Home", FormMethod.Post))
+                {
+                    <br />
+                    <div class="form-group col-lg-offset-5">
+                        
+                        <div class="row">
+                            @Html.TextBoxFor(c => c.Email, new { @class = "form-control", placeholder = "Email" })
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-offset-5">
+                        
+                        <div class="row ">
+                            @Html.TextBoxFor(c => c.Password, new { @class = "form-control", placeholder = "Password" })
+                        </div>
+                    </div>
+                    <div class="forgot">
+                      
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ingresar</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
