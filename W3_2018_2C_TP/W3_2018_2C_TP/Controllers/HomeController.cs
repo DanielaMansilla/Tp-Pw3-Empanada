@@ -13,8 +13,15 @@ namespace W3_2018_2C_TP.Controllers
         PedidoServicio pedidoServicio = new PedidoServicio();
         public ActionResult Index(Usuario user)
         {
-            List<Pedido> pedidos = pedidoServicio.obtenerListaPorUsuario(user);
-            return View(pedidos);
+            if (Session["User"] != null)
+            {
+                List<Pedido> pedidos = pedidoServicio.obtenerListaPorUsuario(user);
+                return View(pedidos);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
 
         public ActionResult Login()
@@ -28,6 +35,7 @@ namespace W3_2018_2C_TP.Controllers
             if (ModelState.IsValid)
             {
                 Usuario user = servicio.IniciarSesion(u);
+                Session["User"] = user; 
                 return RedirectToAction("Index", user);
             }
             else
