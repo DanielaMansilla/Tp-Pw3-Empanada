@@ -83,9 +83,9 @@ namespace W3_2018_2C_TP.Servicios
                 pedidosResultado.Add(inv.Pedido);
             }
 
-            List<Pedido> pedidosResponsable = Context.Pedido.Where(p => p.IdUsuarioResponsable == idUsuario).ToList();
+            //List<Pedido> pedidosResponsable = Context.Pedido.Where(p => p.IdUsuarioResponsable == idUsuario).ToList();
 
-            pedidosResultado.AddRange(pedidosResponsable);
+            //pedidosResultado.AddRange(pedidosResponsable);
 
             return pedidosResultado.OrderByDescending(p => p.FechaCreacion).ToList();
         }

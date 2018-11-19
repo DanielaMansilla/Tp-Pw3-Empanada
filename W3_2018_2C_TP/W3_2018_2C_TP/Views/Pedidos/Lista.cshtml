@@ -31,13 +31,10 @@
                             @Html.Raw("Invitado")
                         }
                     </td>
-                    <!--<td>p.Usuario.Rol.ToString()</td>-->
                     <td>
-                        @Html.ActionLink("Editar", "Editar", new { Id = p.IdPedido })
-                        @Html.Raw(" - ")
-                        @Html.ActionLink("Elegir Gustos", "Elegir", new { Id = p.IdPedido })
-                        @Html.Raw(" - ")
-                        @Html.ActionLink("Eliminar", "Eliminar", new { Id = p.IdPedido })
+                        <a href="/Pedidos/Editar/@p.IdPedido">Editar</a>
+                        <a href="/Pedidos/Elegir/@p.IdPedido">Editar</a>
+                        <a href="/Pedidos/Eliminar/@p.IdPedido">Editar</a>
                     </td>
                 </tr>
             }
