@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using W3_2018_2C_TP.Models.Enums;
 using W3_2018_2C_TP.Servicios;
 using W3_2018_2C_TP.Models.Dto;
 
@@ -67,45 +68,22 @@ namespace W3_2018_2C_TP.Controllers
             {
                 ViewBag.Mensaje = Session["EliminarMensaje"].ToString();
             }
-            List<Pedido> pedidos = _servicioPedido.ListarPedidosResponsableInvitado(SessionManager.UsuarioSession.IdUsuario);
+            List<Pedido> pedidos = _servicioPedido.ListarDescendente();
             return View(pedidos);
         }
 
         [HttpGet]
         public ActionResult Editar(int id)
         {
-            Pedido pedidoEditar = _servicioPedido.ObtenerPorId(id);
-
-            if (pedidoEditar.EstadoPedido.Nombre == "Cerrado")
-            {
-                return RedirectToAction("Detalle", "Pedidos", pedidoEditar.IdPedido);
-            }
-            else
-            {
-                //Lleno el ddl con los gustos por pedido
-                ViewBag.ListaGusto = _servicioPedido.ObtenerGustosPorPedido(pedidoEditar.IdPedido);
-                ViewBag.UsuariosInvitados = _servicioPedido.ObtenerUsuariosInvitados(pedidoEditar.IdPedido);
-
-                return View(pedidoEditar);
-            }
-          
-          
+            Pedido pedidoModificar = _servicioPedido.ObtenerPorId(id);
+            return View(pedidoModificar);
         }
 
         [HttpPost]
         public ActionResult Editar(Pedido pedido)
         {
-            if (ModelState.IsValid)
-            {
-                //Logica de reenvio de email dependediendo la opcion elegida en el drop down list
-                //var idsReenviar = H
-                _servicioPedido.Editar(pedido);
-                return RedirectToAction("Lista", "Pedidos");
-            }
-            else
-            {
-                return View(pedido.IdPedido);
-            }
+            _servicioPedido.Editar(pedido);
+            return RedirectToAction("Lista", "Pedidos");
 
         }
 
@@ -129,13 +107,12 @@ namespace W3_2018_2C_TP.Controllers
             var gustos = _servicioGustoEmpanada.GetAll();
             return View(gustos);
         }
-
         [HttpGet]
         public ActionResult Detalle(int id)
         {
             Pedido p = _servicioPedido.ObtenerPorId(id);
 
-            if (p.EstadoPedido.Nombre == "Cerrado")
+            if (p.EstadoPedido.Nombre == "Cerrado" || p.Usuario.Rol == Rol.Invitado)
             {
                 return View(p);
             }

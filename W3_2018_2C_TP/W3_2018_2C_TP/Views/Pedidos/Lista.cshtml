@@ -1,6 +1,6 @@
 ﻿
 @{
-//Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
+    //Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
 }
 
 @model List<Pedido>
@@ -21,7 +21,16 @@
                     <td>@p.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</td>
                     <td>@p.NombreNegocio</td>
                     <td>@p.EstadoPedido.Nombre</td>
-                    <td>Rol Usuario</td>
+                    <td>
+                        @if (p.IdUsuarioResponsable == SessionManager.UsuarioSession.IdUsuario)
+                        {
+                            @Html.Raw("Responsable")
+                        }
+                        else
+                        {
+                            @Html.Raw("Invitado")
+                        }
+                    </td>
                     <!--<td>p.Usuario.Rol.ToString()</td>-->
                     <td>
                         @Html.ActionLink("Editar", "Editar", new { Id = p.IdPedido })
