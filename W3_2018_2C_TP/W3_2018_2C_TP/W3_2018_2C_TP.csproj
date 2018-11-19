@@ -188,19 +188,11 @@
     <Compile Include="InvitacionPedidoGustoEmpanadaUsuario.cs">
       <DependentUpon>EmpanadasEntityModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Enums\ReEnviarInvitacion.cs" />
-<<<<<<< HEAD
     <Compile Include="Models\Extensions\Pedido.cs" />
     <Compile Include="Models\Extensions\Usuario.cs" />
     <Compile Include="Models\Metadata\PedidoMetadata.cs" />
     <Compile Include="Models\Metadata\UsuarioMetadata.cs" />
     <Compile Include="Models\Session\SessionManager.cs" />
-=======
-    <Compile Include="Models\Enums\Rol.cs" />
-    <Compile Include="Models\Extensions\Pedido.cs" />
-    <Compile Include="Models\Extensions\Usuario.cs" />
-    <Compile Include="Models\Metadata\PedidoMetadata.cs" />
->>>>>>> 1d19eb745deb66ade10678bbde3b5f04887bcc17
     <Compile Include="Pedido.cs">
       <DependentUpon>EmpanadasEntityModel.tt</DependentUpon>
     </Compile>
