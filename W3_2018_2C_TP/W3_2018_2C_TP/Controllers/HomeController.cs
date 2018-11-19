@@ -32,7 +32,7 @@ namespace W3_2018_2C_TP.Controllers
                 //Usuario logueado actualmente lo guardo en session
                 SessionManager.UsuarioSession = user;
 
-                return RedirectToAction("Lista", "Pedidos");
+                return RedirectToAction("Lista", "Pedidos", user.IdUsuario);
             }
             else
             {

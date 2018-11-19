@@ -72,6 +72,14 @@ namespace W3_2018_2C_TP.Controllers
         }
 
         [HttpGet]
+        public ActionResult Lista(int id)
+        {
+            List<Pedido> pedidos = _servicioPedido.ListarPedidosResponsableInvitado(id);
+
+            return View(pedidos);
+        }
+
+        [HttpGet]
         public ActionResult Editar(int id)
         {
             Pedido pedidoEditar = _servicioPedido.ObtenerPorId(id);
