@@ -46,15 +46,48 @@ namespace W3_2018_2C_TP.Servicios
         {
 
         }
+
         public List<Pedido> Listar()
         {
             return Context.Pedido.ToList();
         }
 
-        //Creo metodo que ordena por fecha de forma descendente los pedidos
+        /// <summary>
+        /// Metodo que ordena por fecha de forma descendente todos los pedidos
+        /// </summary>
+        /// <returns> List<Pedido> </returns>
         public List<Pedido> ListarDescendente()
         {
             return Context.Pedido.OrderByDescending(p => p.FechaCreacion).ToList();
+        }
+       
+        /// <summary>
+        ///  Me devuelve la lista de pedidos en los que soy responsable e invitado, mediante id de usuario.
+        /// </summary>
+        /// <param name="idUsuario"> idUsuario </param>
+        /// <returns> List<Pedido> </returns>
+        public List<Pedido> ListarPedidosResponsableInvitado(int idUsuario)
+        {
+            // forma corta
+            //List<Pedido> pedidos = Context.InvitacionPedido.Include("Pedido")
+            //                .Where(o => o.IdUsuario == idUsuario)
+            //                .Select(i => i.Pedido).ToList();
+
+            List<Pedido> pedidosResultado = new List<Pedido>();
+
+            List<InvitacionPedido> imvitacionesDelUsuario = Context.InvitacionPedido.Include("Pedido")
+                          .Where(o => o.IdUsuario == idUsuario).ToList();
+
+            foreach (var inv in imvitacionesDelUsuario)
+            {
+                pedidosResultado.Add(inv.Pedido);
+            }
+
+            List<Pedido> pedidosResponsable = Context.Pedido.Where(p => p.IdUsuarioResponsable == idUsuario).ToList();
+
+            pedidosResultado.AddRange(pedidosResponsable);
+
+            return pedidosResultado.OrderByDescending(p => p.FechaCreacion).ToList();
         }
 
         public List<Pedido> obtenerListaPorUsuario(Usuario user)
@@ -96,24 +129,46 @@ namespace W3_2018_2C_TP.Servicios
 
         public void Editar(Pedido pedido)
         {
-            Pedido pedidoModificar = Context.Pedido.FirstOrDefault(o => o.IdPedido == pedido.IdPedido);
+            Pedido pedidoEditar = Context.Pedido.FirstOrDefault(o => o.IdPedido == pedido.IdPedido);
 
-            pedidoModificar.IdUsuarioResponsable = pedido.IdUsuarioResponsable;
-            pedidoModificar.NombreNegocio = pedido.NombreNegocio;
-            pedidoModificar.Descripcion = pedido.Descripcion;
-            pedidoModificar.IdEstadoPedido = pedido.IdEstadoPedido;
-            pedidoModificar.PrecioUnidad = pedido.PrecioUnidad;
-            pedidoModificar.PrecioDocena = pedido.PrecioDocena;
-            pedidoModificar.FechaCreacion = pedido.FechaCreacion;
-            pedidoModificar.EstadoPedido = pedido.EstadoPedido;
-            pedidoModificar.InvitacionPedido = pedido.InvitacionPedido;
-            pedidoModificar.InvitacionPedidoGustoEmpanadaUsuario = pedido.InvitacionPedidoGustoEmpanadaUsuario;
-            pedidoModificar.Usuario = pedido.Usuario;
+            //pedidoEditar.IdUsuarioResponsable = pedido.IdUsuarioResponsable;
+            pedidoEditar.NombreNegocio = pedido.NombreNegocio;
+            pedidoEditar.Descripcion = pedido.Descripcion;
+            //pedidoEditar.IdEstadoPedido = pedido.IdEstadoPedido;
+            pedidoEditar.PrecioUnidad = pedido.PrecioUnidad;
+            pedidoEditar.PrecioDocena = pedido.PrecioDocena;
+            pedidoEditar.FechaModificacion = DateTime.Now;
+            //pedidoEditar.EstadoPedido = pedido.EstadoPedido;
+            pedidoEditar.InvitacionPedido = pedido.InvitacionPedido;
+            pedidoEditar.InvitacionPedidoGustoEmpanadaUsuario = pedido.InvitacionPedidoGustoEmpanadaUsuario;
+            pedidoEditar.Usuario = pedido.Usuario;
             Context.SaveChanges();
         }
+
+        /// <summary>
+        /// Obtengo los usuarios invitados de un pedido mediante el id de pedido
+        /// </summary>
+        /// <param name="idPedido"></param>
+        /// <returns> List<Usuario> </returns>
+        public List<Usuario> ObtenerUsuariosInvitados(int idPedido)
+        {
+            //int idUsuarioResponsable = Context.Pedido.FirstOrDefault(p => p.IdPedido == idPedido).IdUsuarioResponsable;
+
+            //List<Usuario> listUsuariosInvitados = Context.Pedido.Include("InvitacionPedido").Where(p => p.IdPedido == idPedido).Select(u => u.Usuario).Where(u => u.IdUsuario != idUsuarioResponsable).ToList();
+
+            List<Usuario> listUsuariosInvitados = Context.InvitacionPedido.Where(ip => ip.IdPedido == idPedido).Select(ip => ip.Usuario).ToList();
+
+            return listUsuariosInvitados;
+        }
+
         public List<GustoEmpanada> ObtenerGustos()
         {
             return Context.GustoEmpanada.ToList();
+        }
+
+        public List<GustoEmpanada> ObtenerGustosPorPedido(int id)
+        {
+            return Context.Pedido.FirstOrDefault(p => p.IdPedido == id).GustoEmpanada.ToList();
         }
     }
 }

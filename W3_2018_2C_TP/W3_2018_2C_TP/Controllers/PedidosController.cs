@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using W3_2018_2C_TP.Models.Enums;
 using W3_2018_2C_TP.Servicios;
 using W3_2018_2C_TP.Models.Dto;
 
@@ -72,19 +71,54 @@ namespace W3_2018_2C_TP.Controllers
             return View(pedidos);
         }
 
+        [HttpPost]
+        public ActionResult Lista(int idUsuario)
+        {
+            List<Pedido> pedidos = _servicioPedido.ListarPedidosResponsableInvitado(idUsuario);
+
+            //ViewBag.UsuarioLogueado = usuarioServicio.UsuarioLogueado(idUsuario).IdUsuario;
+            if (Session["EliminarMensaje"] != null)
+            {
+                ViewBag.Mensaje = Session["EliminarMensaje"].ToString();
+            }
+            //List<Pedido> pedidos = pedidoServicio.ListarDescendente();
+
+            return View(pedidos);
+        }
+
         [HttpGet]
         public ActionResult Editar(int id)
         {
-            Pedido pedidoModificar = _servicioPedido.ObtenerPorId(id);
-            return View(pedidoModificar);
+            Pedido pedidoEditar = _servicioPedido.ObtenerPorId(id);
+
+            if (pedidoEditar.EstadoPedido.Nombre == "Cerrado")
+            {
+                return RedirectToAction("Detalle", "Pedidos", pedidoEditar.IdPedido);
+            }
+            else
+            {
+                //Lleno el ddl con los gustos por pedido
+                ViewBag.ListaGusto = _servicioPedido.ObtenerGustosPorPedido(pedidoEditar.IdPedido);
+                ViewBag.UsuariosInvitados = _servicioPedido.ObtenerUsuariosInvitados(pedidoEditar.IdPedido);
+                
+                return View(pedidoEditar);
+            }
         }
 
         [HttpPost]
         public ActionResult Editar(Pedido pedido)
         {
-            _servicioPedido.Editar(pedido);
-            return RedirectToAction("Lista", "Pedidos");
-
+            if (ModelState.IsValid)
+            {
+                //Logica de reenvio de email dependediendo la opcion elegida en el drop down list
+                //var idsReenviar = H
+                _servicioPedido.Editar(pedido);
+                return RedirectToAction("Lista", "Pedidos");
+            }
+            else
+            {
+                return View(pedido.IdPedido);
+            }
         }
 
         [HttpGet]
@@ -112,7 +146,9 @@ namespace W3_2018_2C_TP.Controllers
         {
             Pedido p = _servicioPedido.ObtenerPorId(id);
 
-            if (p.EstadoPedido.Nombre == "Cerrado" || p.Usuario.Rol == Rol.Invitado)
+            //ViewBag.UsuarioLogueado = usuarioServicio.UsuarioLogueado(p.IdUsuarioResponsable).IdUsuario;
+
+            if (p.EstadoPedido.Nombre == "Cerrado")// || p.Usuario.IdUsuario == usuarioServicio.UsuarioLogueado(p.IdUsuarioResponsable).IdUsuario)
             {
                 return View(p);
             }

@@ -198,11 +198,10 @@
     <Compile Include="Models\Dto\PedidoGustosEmpanadasDTO.cs" />
     <Compile Include="Models\Dto\PedidoRequestDTO.cs" />
     <Compile Include="Models\Dto\UsuarioDTO.cs" />
-    <Compile Include="Models\Enums\ReEnviarInvitacion.cs" />
-    <Compile Include="Models\Enums\Rol.cs" />
     <Compile Include="Models\Extensions\Pedido.cs" />
     <Compile Include="Models\Extensions\Usuario.cs" />
     <Compile Include="Models\Metadata\PedidoMetadata.cs" />
+    <Compile Include="Models\Metadata\UsuarioMetadata.cs" />
     <Compile Include="Pedido.cs">
       <DependentUpon>EmpanadasEntityModel.tt</DependentUpon>
     </Compile>
