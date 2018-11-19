@@ -110,14 +110,14 @@ namespace W3_2018_2C_TP.Servicios
         {
             Pedido pedidoEditar = Context.Pedido.FirstOrDefault(o => o.IdPedido == pedido.IdPedido);
 
-            pedidoEditar.IdUsuarioResponsable = pedido.IdUsuarioResponsable;
+            //pedidoEditar.IdUsuarioResponsable = pedido.IdUsuarioResponsable;
             pedidoEditar.NombreNegocio = pedido.NombreNegocio;
             pedidoEditar.Descripcion = pedido.Descripcion;
-            pedidoEditar.IdEstadoPedido = pedido.IdEstadoPedido;
+            //pedidoEditar.IdEstadoPedido = pedido.IdEstadoPedido;
             pedidoEditar.PrecioUnidad = pedido.PrecioUnidad;
             pedidoEditar.PrecioDocena = pedido.PrecioDocena;
-            pedidoEditar.FechaCreacion = pedido.FechaCreacion;
-            pedidoEditar.EstadoPedido = pedido.EstadoPedido;
+            pedidoEditar.FechaModificacion = DateTime.Now;
+            //pedidoEditar.EstadoPedido = pedido.EstadoPedido;
             pedidoEditar.InvitacionPedido = pedido.InvitacionPedido;
             pedidoEditar.InvitacionPedidoGustoEmpanadaUsuario = pedido.InvitacionPedidoGustoEmpanadaUsuario;
             pedidoEditar.Usuario = pedido.Usuario;

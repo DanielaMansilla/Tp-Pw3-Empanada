@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Editar";
+    //Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
 }
 
 @model Pedido
@@ -9,8 +9,10 @@
 
 @Html.BeginForm("Editar", "Pedidos", FormMethod.Post)
 {
+    <div>
+        @Html.HiddenFor(p => p.IdPedido)
+    </div>
 
-    <div>@Html.HiddenFor(p => p.IdPedido)</div>
     <div>
         @Html.LabelFor(p => p.NombreNegocio)
         @Html.Raw(": ")
@@ -43,11 +45,11 @@
             {
                 if (u.InvitacionPedido.FirstOrDefault(i => i.IdPedido == Model.IdPedido).Completado)
                 {
-                    <option value="@u.IdUsuario">@u.Email @Html.Raw("SI")</option>
+                    <option value="@u.IdUsuario">@u.Email @Html.Raw("(SI)")</option>
                 }
                 else
                 {
-                    <option value="@u.IdUsuario">@u.Email @Html.Raw("NO")</option>
+                    <option value="@u.IdUsuario">@u.Email @Html.Raw("(NO)")</option>
                 }
             }
         </select>
@@ -64,14 +66,19 @@
         @Html.Label("Re-enviar Invitación: ")
         <select name="IdReEnviarInvitacion" id="IdReEnviarInvitacion">
             <option value="0">A Nadie</option>
-            <option value="1">Re-enviar Incitaci&oacute;n a Todos</option>
+            <option value="1">Re-enviar Invitaci&oacute;n a Todos</option>
             <option value="2">Enviar s&oacute;lo a los Nuevos”</option>
-            <option value="3">Re-enviar s&oacute;lo a los que no eligieron gustos”</option>
+            <option value="3">Re-enviar s&oacute;lo a los que no eligieron gustos</option>
         </select>
         <br />
         <a href="/Pedidos/Editar/">
             <button type="button" class="btn btn-dark">Guardar</button>
         </a>
     </div>
+
 }
+
+<div class="=">
+    <button type="button" class="btn btn-dark" id="btnConfirmar" name="btnConfirmar">Confirmar</button>
+</div>
 

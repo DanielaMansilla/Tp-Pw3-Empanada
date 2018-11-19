@@ -1,9 +1,7 @@
 ﻿
 @{
-     Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
+//Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
 }
-
-
 
 @model List<Pedido>
 <div class="container">
@@ -11,34 +9,11 @@
     <div class="table-responsive">
         <table class="table table-dark table-bordered">
             <tr>
-<<<<<<< HEAD
-                <td>@p.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</td>
-                <td>@p.NombreNegocio</td>
-                <td>@p.EstadoPedido.Nombre</td>
-                <td>
-                    @if (p.IdUsuarioResponsable == ViewBag.UsuarioLogueado)
-                    {
-                        @Html.Raw("Responsable")
-                    }
-                    else
-                    {
-                        @Html.Raw("Invitado")
-                    }
-                </td>
-                <td>
-                    @Html.ActionLink("Editar", "Editar", new { Id = p.IdPedido })
-                    @Html.Raw(" - ")
-                    @Html.ActionLink("Elegir Gustos", "Elegir", new { Id = p.IdPedido })
-                    @Html.Raw(" - ")
-                    @Html.ActionLink("Eliminar", "Eliminar", new { Id = p.IdPedido })
-                </td>
-=======
                 <th>Fecha Creaci&oacute;n</th>
                 <th>Nombre Negocio</th>
                 <th>Estado</th>
-                
+                <th>Rol</th>
                 <th>Acciones</th>
->>>>>>> 1d19eb745deb66ade10678bbde3b5f04887bcc17
             </tr>
             @foreach (Pedido p in Model)
             {
@@ -46,7 +21,7 @@
                     <td>@p.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</td>
                     <td>@p.NombreNegocio</td>
                     <td>@p.EstadoPedido.Nombre</td>
-                   
+                    <td>Rol Usuario</td>
                     <!--<td>p.Usuario.Rol.ToString()</td>-->
                     <td>
                         @Html.ActionLink("Editar", "Editar", new { Id = p.IdPedido })

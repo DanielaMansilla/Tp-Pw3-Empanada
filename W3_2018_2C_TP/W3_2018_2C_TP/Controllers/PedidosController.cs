@@ -55,8 +55,7 @@ namespace W3_2018_2C_TP.Controllers
 
         [HttpGet]
         public ActionResult Lista()
-        {
-<<<<<<< HEAD
+        { 
             List<Pedido> pedidos = pedidoServicio.Listar();
 
             return View(pedidos);
@@ -67,22 +66,20 @@ namespace W3_2018_2C_TP.Controllers
         {
             List<Pedido> pedidos = pedidoServicio.ListarPedidosResponsableInvitado(idUsuario);
 
-            ViewBag.UsuarioLogueado = usuarioServicio.UsuarioLogueado(idUsuario).IdUsuario;
-
-=======
+            //ViewBag.UsuarioLogueado = usuarioServicio.UsuarioLogueado(idUsuario).IdUsuario;
             if (Session["EliminarMensaje"] != null)
             {
                 ViewBag.Mensaje = Session["EliminarMensaje"].ToString();
             }
-            List<Pedido> pedidos = pedidoServicio.ListarDescendente();
->>>>>>> 1d19eb745deb66ade10678bbde3b5f04887bcc17
+            //List<Pedido> pedidos = pedidoServicio.ListarDescendente();
+
             return View(pedidos);
         }
 
         [HttpGet]
-        public ActionResult Editar(int idPedido)
+        public ActionResult Editar(int id)
         {
-            Pedido pedidoEditar = pedidoServicio.ObtenerPorId(idPedido);
+            Pedido pedidoEditar = pedidoServicio.ObtenerPorId(id);
 
             if (pedidoEditar.EstadoPedido.Nombre == "Cerrado")
             {
@@ -103,6 +100,8 @@ namespace W3_2018_2C_TP.Controllers
         {
             if (ModelState.IsValid)
             {
+                //Logica de reenvio de email dependediendo la opcion elegida en el drop down list
+                //var idsReenviar = H
                 pedidoServicio.Editar(pedido);
                 return RedirectToAction("Lista", "Pedidos");
             }
@@ -133,13 +132,13 @@ namespace W3_2018_2C_TP.Controllers
         }
 
         [HttpGet]
-        public ActionResult Detalle(int idPedido)
+        public ActionResult Detalle(int id)
         {
-            Pedido p = pedidoServicio.ObtenerPorId(idPedido);
+            Pedido p = pedidoServicio.ObtenerPorId(id);
 
-            ViewBag.UsuarioLogueado = usuarioServicio.UsuarioLogueado(p.IdUsuarioResponsable).IdUsuario;
+            //ViewBag.UsuarioLogueado = usuarioServicio.UsuarioLogueado(p.IdUsuarioResponsable).IdUsuario;
 
-            if (p.EstadoPedido.Nombre == "Cerrado" || p.Usuario.IdUsuario == usuarioServicio.UsuarioLogueado(p.IdUsuarioResponsable).IdUsuario)
+            if (p.EstadoPedido.Nombre == "Cerrado")// || p.Usuario.IdUsuario == usuarioServicio.UsuarioLogueado(p.IdUsuarioResponsable).IdUsuario)
             {
                 return View(p);
             }

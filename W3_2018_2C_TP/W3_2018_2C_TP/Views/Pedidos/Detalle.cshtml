@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Detalle";
+    Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
 }
 
 @model Pedido
@@ -12,8 +12,11 @@
                 <h2>Detalle Pedido</h2>
             </div>
             <div id="Login" class="col-md-12">
+                    <div>
+                        @Html.HiddenFor(p => p.IdPedido)
+                    </div>
                     <div class="row">
-                        <label>Nombre de Negocio: </label> @Model.NombreNegocio
+                        <label>Nombre de Negocio: </label> @Model.NombreNegocio 
                     </div>
                     <div class="row">
                         @Html.LabelFor(o => o.Usuario.Email) @Html.Raw(" : ") @Model.Usuario.Email
@@ -31,7 +34,8 @@
                         <label>Fecha de creación</label> @Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
                     </div>
                     <div class="row">
-                        <input class="btn btn-danger" value="Eliminar" type="submit" />
+                        @Html.ActionLink("Ir a Lista Pedidos", "Lista", "Pedidos")
+                        @*<input class="btn btn-danger" value="Eliminar" type="submit" />*@
                     </div>                
             </div>
         </div>
