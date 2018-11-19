@@ -187,6 +187,16 @@
     <Compile Include="InvitacionPedidoGustoEmpanadaUsuario.cs">
       <DependentUpon>EmpanadasEntityModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Dto\EmailDTO.cs" />
+    <Compile Include="Models\Dto\GustoEmpanadaDTO.cs" />
+    <Compile Include="Models\Dto\GustoEmpanadasCantidadDTO.cs" />
+    <Compile Include="Models\Dto\GustosPedidoUsuarioDTO.cs" />
+    <Compile Include="Models\Dto\InvitadosMailDTO.cs" />
+    <Compile Include="Models\Dto\MailDTO.cs" />
+    <Compile Include="Models\Dto\PedidoDTO.cs" />
+    <Compile Include="Models\Dto\PedidoGustosEmpanadasDTO.cs" />
+    <Compile Include="Models\Dto\PedidoRequestDTO.cs" />
+    <Compile Include="Models\Dto\UsuarioDTO.cs" />
     <Compile Include="Models\Enums\ReEnviarInvitacion.cs" />
     <Compile Include="Models\Enums\Rol.cs" />
     <Compile Include="Models\Extensions\Pedido.cs" />
@@ -196,6 +206,9 @@
       <DependentUpon>EmpanadasEntityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servicios\EmailServicio.cs" />
+    <Compile Include="Servicios\GustoEmpanadaServicio.cs" />
+    <Compile Include="Servicios\InvitacionPedidoServicio.cs" />
     <Compile Include="Servicios\PedidoServicio.cs" />
     <Compile Include="Servicios\UsuarioServicio.cs" />
     <Compile Include="Usuario.cs">
