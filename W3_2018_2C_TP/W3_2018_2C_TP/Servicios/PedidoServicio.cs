@@ -11,7 +11,7 @@ namespace W3_2018_2C_TP.Servicios
     public class PedidoServicio
     {
         public Entities Context = new Entities();
-        private readonly GustoEmpanadaServicio _servicioGustoEmpanada = new GustoEmpanadaServicio();
+        private readonly GustoEmpanadasServicio _servicioGustoEmpanada = new GustoEmpanadasServicio();
         private readonly InvitacionPedidoServicio _servicioInvitacionPedido = new InvitacionPedidoServicio();
  
         public Pedido CrearPedidoDesdeCero(PedidoGustosEmpanadasDTO pge)

@@ -9,7 +9,7 @@ namespace W3_2018_2C_TP
     {
        
         private static readonly Entities Context = new Entities();
-        private readonly GustoEmpanadaServicio _servicioGustoEmpanada = new GustoEmpanadaServicio();
+        private readonly GustoEmpanadasServicio _servicioGustoEmpanada = new GustoEmpanadasServicio();
         public decimal PrecioTotal => CalcularPrecioTotal();
         public decimal PrecioCalculadoPorUnidad => CalcularPrecioPorUnidad();
 

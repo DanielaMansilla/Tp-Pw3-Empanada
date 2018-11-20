@@ -13,7 +13,7 @@ namespace W3_2018_2C_TP.Controllers
        
         //Se instancia los servicios
         private readonly PedidoServicio _servicioPedido = new PedidoServicio();
-        private readonly GustoEmpanadaServicio _servicioGustoEmpanada = new GustoEmpanadaServicio();
+        private readonly GustoEmpanadasServicio _servicioGustoEmpanada = new GustoEmpanadasServicio();
         private readonly InvitacionPedidoServicio _servicioInvitacionPedido = new InvitacionPedidoServicio();
         private readonly UsuarioServicio _servicioUsuario = new UsuarioServicio();
         private readonly EmailServicio _servicioEmail = new EmailServicio();
@@ -38,7 +38,7 @@ namespace W3_2018_2C_TP.Controllers
             {
                 var pedidoNuevo = _servicioPedido.CrearPedidoDesdeCero(pedidoGustosEmpanadas);
 
-                var usuarios = _servicioInvitacionPedido.Crear(pedidoNuevo, pedidoGustosEmpanadas.Invitados, SessionManager.UsuarioLogin.IdUsuario);
+                var usuarios = _servicioInvitacionPedido.Crear(pedidoNuevo, pedidoGustosEmpanadas.Invitados, SessionManager.UsuarioSession.IdUsuario);
                 
                 //_servicioEmail.ArmarMailInicioPedido(usuarios, pedidoNuevo.IdPedido);
                 return RedirectToAction("Iniciado", new { id = pedidoNuevo.IdPedido });
