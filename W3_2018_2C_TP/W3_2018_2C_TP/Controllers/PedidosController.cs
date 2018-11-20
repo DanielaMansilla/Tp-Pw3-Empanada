@@ -37,12 +37,14 @@ namespace W3_2018_2C_TP.Controllers
             if (ModelState.IsValid)
             {
                 var pedidoNuevo = _servicioPedido.CrearPedidoDesdeCero(pedidoGustosEmpanadas);
-                //var usuarios = _servicioInvitacionPedido.Crear(pedidoNuevo, pedidoGustosEmpanadas.Invitados, Sesion.IdUsuario);
+
+                var usuarios = _servicioInvitacionPedido.Crear(pedidoNuevo, pedidoGustosEmpanadas.Invitados, SessionManager.UsuarioLogin.IdUsuario);
+                
                 //_servicioEmail.ArmarMailInicioPedido(usuarios, pedidoNuevo.IdPedido);
                 return RedirectToAction("Iniciado", new { id = pedidoNuevo.IdPedido });
 
             }
-            //pedidoGustosEmpanadas.Invitados = _servicioUsuario.GetAllByEmail(pedidoGustosEmpanadas.Invitados);
+            pedidoGustosEmpanadas.Invitados = _servicioUsuario.GetAllByEmail(pedidoGustosEmpanadas.Invitados);
             ViewBag.iniciar = false;
             return View("Iniciar", pedidoGustosEmpanadas);
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using W3_2018_2C_TP.Models.Dto;
+using W3_2018_2C_TP.Models.Enums;
 
 namespace W3_2018_2C_TP.Servicios
 {
@@ -12,23 +13,15 @@ namespace W3_2018_2C_TP.Servicios
         public Entities Context = new Entities();
         private readonly GustoEmpanadaServicio _servicioGustoEmpanada = new GustoEmpanadaServicio();
         private readonly InvitacionPedidoServicio _servicioInvitacionPedido = new InvitacionPedidoServicio();
-        //public void Agregar(Pedido p)
-        //{
-        //    var estado = Context.EstadoPedido.FirstOrDefault(e => e.IdEstadoPedido == 1);
-        //    var user = Context.Usuario.FirstOrDefault(u => u.IdUsuario == 1);
-        //    p.FechaCreacion = DateTime.Now ;
-        //    p.EstadoPedido = estado;
-        //    p.Usuario = user;
-        //    Context.Pedido.Add(p);
-        //    Context.SaveChanges();
-        //}
+ 
         public Pedido CrearPedidoDesdeCero(PedidoGustosEmpanadasDTO pge)
         {
             var pedido = pge.Pedido;
           
             pedido.FechaCreacion = DateTime.Now;
+
             //pedido.IdUsuarioResponsable = Sesion.IdUsuario;
-            //pedido.IdEstadoPedido = (int)EstadosPedido.Abierto;
+            pedido.IdEstadoPedido = (int)EstadosDelPedido.Abierto;
             List<GustoEmpanada> gustosSeleccionados = new List<GustoEmpanada>();
             foreach (var gusto in pge.GustosDisponibles)
             {
