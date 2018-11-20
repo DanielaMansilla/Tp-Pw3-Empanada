@@ -24,6 +24,7 @@ namespace W3_2018_2C_TP.Controllers
             }
         }
 
+        [HttpGet]
         public ActionResult Login()
         {
             return View();

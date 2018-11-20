@@ -32,9 +32,17 @@
                         }
                     </td>
                     <td>
-                        <a href="/Pedidos/Editar/@p.IdPedido">Editar</a>
-                        <a href="/Pedidos/Elegir/@p.IdPedido">Editar</a>
-                        <a href="/Pedidos/Eliminar/@p.IdPedido">Editar</a>
+                        @if (p.IdUsuarioResponsable == SessionManager.UsuarioSession.IdUsuario)
+                        {
+                            <a href="/Pedidos/Editar/@p.IdPedido">Editar</a>
+                            @Html.Raw(" - ")
+                        }
+                        <a href="/Pedidos/Elegir/@p.IdPedido">Elegir Gustos</a>
+                        @if (p.IdUsuarioResponsable == SessionManager.UsuarioSession.IdUsuario)
+                        {
+                            @Html.Raw(" - ")
+                            <a href="/Pedidos/Eliminar/@p.IdPedido">Eliminar</a>
+                        }
                     </td>
                 </tr>
             }

@@ -7,8 +7,15 @@
 
 <h2>Edici&oacute;n de Pedido</h2>
 
-@Html.BeginForm("Editar", "Pedidos", FormMethod.Post)
-{
+<form action="/Pedidos/Editar" method="Post">
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger" role="alert">
+            @Html.ValidationSummary(false)
+        </div>
+    }
+
     <div>
         @Html.HiddenFor(p => p.IdPedido)
     </div>
@@ -19,8 +26,7 @@
         @Html.TextBoxFor(p => p.NombreNegocio)
     </div>
     <div>
-        @Html.LabelFor(p => p.Descripcion)
-        @Html.Raw(": ")
+        <label>Descripci&oacute;n: </label>
         @Html.TextBoxFor(p => p.Descripcion)
     </div>
     <div>
@@ -36,7 +42,14 @@
     <div>
         @Html.LabelFor(p => p.GustoEmpanada)
         @Html.Raw(": ")
-        @Html.DropDownListFor(p => p.GustoEmpanada, new SelectList(ViewBag.ListaGusto, "IdGustoEmpanada", "Nombre", new { type = "multiple" }))
+        @*@Html.DropDownListFor(p => p.GustoEmpanada, new SelectList(ViewBag.ListaGusto, "IdGustoEmpanada", "Nombre", new { type = "multiple" }))*@
+        <select name="IdGustoEmpanada" multiple>
+            @foreach (GustoEmpanada ge in ViewBag.ListaGusto)
+            {
+
+                <option value="@ge.IdGustoEmpanada">@ge.Nombre</option>
+            }
+        </select>
     </div>
     <div>
         @Html.Label("Email Usuarios Invitados: ")
@@ -56,10 +69,10 @@
     </div>
 
     <div>
-        @Html.ValidationMessageFor(p => p.NombreNegocio)
-        @Html.ValidationMessageFor(p => p.PrecioUnidad)
-        @Html.ValidationMessageFor(p => p.PrecioDocena)
-        @Html.ValidationMessageFor(p => p.GustoEmpanada)
+        @Html.ValidationMessageFor(p => p.NombreNegocio, "", new { @class = "text-danger" })
+        @Html.ValidationMessageFor(p => p.PrecioUnidad, "", new { @class = "text-danger" })
+        @Html.ValidationMessageFor(p => p.PrecioDocena, "", new { @class = "text-danger" })
+        @Html.ValidationMessageFor(p => p.GustoEmpanada, "", new { @class = "text-danger" })
     </div>
 
     <div>
@@ -71,14 +84,11 @@
             <option value="3">Re-enviar s&oacute;lo a los que no eligieron gustos</option>
         </select>
         <br />
-        <a href="/Pedidos/Editar/">
-            <button type="button" class="btn btn-dark">Guardar</button>
-        </a>
+        <input type="submit" value="Guardar" id="btnGuardar" class="btn btn-aceptar" />
     </div>
+</form>
 
-}
-
-<div class="=">
-    <button type="button" class="btn btn-dark" id="btnConfirmar" name="btnConfirmar">Confirmar</button>
+<div>
+    <button type="button" class="btn btn-aceptar" id="btnConfirmar" name="btnConfirmar">Confirmar</button>
 </div>
 
