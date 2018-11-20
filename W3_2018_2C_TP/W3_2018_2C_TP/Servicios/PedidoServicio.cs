@@ -76,9 +76,9 @@ namespace W3_2018_2C_TP.Servicios
                 pedidosResultado.Add(inv.Pedido);
             }
 
-            List<Pedido> pedidosResponsable = Context.Pedido.Where(p => p.IdUsuarioResponsable == idUsuario).ToList();
+            //List<Pedido> pedidosResponsable = Context.Pedido.Where(p => p.IdUsuarioResponsable == idUsuario).ToList();
 
-            pedidosResultado.AddRange(pedidosResponsable);
+            //pedidosResultado.AddRange(pedidosResponsable);
 
             return pedidosResultado.OrderByDescending(p => p.FechaCreacion).ToList();
         }
@@ -120,6 +120,10 @@ namespace W3_2018_2C_TP.Servicios
                 .Where(c => c.Completado == true).Count();
         }
 
+        /// <summary>
+        /// Edita el pedido que anteriormente fue pasado por id
+        /// </summary>
+        /// <param name="pedido"></param>
         public void Editar(Pedido pedido)
         {
             Pedido pedidoEditar = Context.Pedido.FirstOrDefault(o => o.IdPedido == pedido.IdPedido);

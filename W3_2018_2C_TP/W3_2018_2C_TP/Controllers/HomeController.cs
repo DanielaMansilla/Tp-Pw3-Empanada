@@ -35,8 +35,11 @@ namespace W3_2018_2C_TP.Controllers
             if (ModelState.IsValid)
             {
                 Usuario user = servicio.IniciarSesion(u);
-                Session["User"] = user; 
-                return RedirectToAction("Index", user);
+
+                //Usuario logueado actualmente lo guardo en session
+                SessionManager.UsuarioSession = user;
+
+                return RedirectToAction("Lista", "Pedidos", user.IdUsuario);
             }
             else
             {

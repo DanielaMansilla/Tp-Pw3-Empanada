@@ -7,16 +7,15 @@ namespace W3_2018_2C_TP
 {
     public static class SessionManager
     {
-        public static Usuario UsuarioLogin
+        public static Usuario UsuarioSession
         {
             get
             {
-                return HttpContext.Current.Session["UsuarioLogueado"] as Usuario;       
+                return HttpContext.Current.Session["UserSession"] as Usuario;
             }
-
             set
             {
-                HttpContext.Current.Session["UsuarioLogueado"] = value;
+                HttpContext.Current.Session["UserSession"] = value;
             }
         }
     }

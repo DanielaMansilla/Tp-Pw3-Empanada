@@ -69,22 +69,7 @@ namespace W3_2018_2C_TP.Controllers
             {
                 ViewBag.Mensaje = Session["EliminarMensaje"].ToString();
             }
-            List<Pedido> pedidos = _servicioPedido.ListarDescendente();
-            return View(pedidos);
-        }
-
-        [HttpPost]
-        public ActionResult Lista(int idUsuario)
-        {
-            List<Pedido> pedidos = _servicioPedido.ListarPedidosResponsableInvitado(idUsuario);
-
-            //ViewBag.UsuarioLogueado = usuarioServicio.UsuarioLogueado(idUsuario).IdUsuario;
-            if (Session["EliminarMensaje"] != null)
-            {
-                ViewBag.Mensaje = Session["EliminarMensaje"].ToString();
-            }
-            //List<Pedido> pedidos = pedidoServicio.ListarDescendente();
-
+            List<Pedido> pedidos = _servicioPedido.ListarPedidosResponsableInvitado(SessionManager.UsuarioSession.IdUsuario);
             return View(pedidos);
         }
 
@@ -102,9 +87,11 @@ namespace W3_2018_2C_TP.Controllers
                 //Lleno el ddl con los gustos por pedido
                 ViewBag.ListaGusto = _servicioPedido.ObtenerGustosPorPedido(pedidoEditar.IdPedido);
                 ViewBag.UsuariosInvitados = _servicioPedido.ObtenerUsuariosInvitados(pedidoEditar.IdPedido);
-                
+
                 return View(pedidoEditar);
             }
+          
+          
         }
 
         [HttpPost]
@@ -121,6 +108,7 @@ namespace W3_2018_2C_TP.Controllers
             {
                 return View(pedido.IdPedido);
             }
+
         }
 
         [HttpGet]
@@ -143,14 +131,13 @@ namespace W3_2018_2C_TP.Controllers
             var gustos = _servicioGustoEmpanada.GetAll();
             return View(gustos);
         }
+
         [HttpGet]
         public ActionResult Detalle(int id)
         {
             Pedido p = _servicioPedido.ObtenerPorId(id);
 
-            //ViewBag.UsuarioLogueado = usuarioServicio.UsuarioLogueado(p.IdUsuarioResponsable).IdUsuario;
-
-            if (p.EstadoPedido.Nombre == "Cerrado")// || p.Usuario.IdUsuario == usuarioServicio.UsuarioLogueado(p.IdUsuarioResponsable).IdUsuario)
+            if (p.EstadoPedido.Nombre == "Cerrado")
             {
                 return View(p);
             }

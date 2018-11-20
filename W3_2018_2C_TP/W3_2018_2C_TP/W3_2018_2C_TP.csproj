@@ -201,6 +201,7 @@
     <Compile Include="Models\Extensions\Usuario.cs" />
     <Compile Include="Models\Metadata\PedidoMetadata.cs" />
     <Compile Include="Models\Metadata\UsuarioMetadata.cs" />
+    <Compile Include="Models\SessionManager\SessionManager.cs" />
     <Compile Include="Pedido.cs">
       <DependentUpon>EmpanadasEntityModel.tt</DependentUpon>
     </Compile>
