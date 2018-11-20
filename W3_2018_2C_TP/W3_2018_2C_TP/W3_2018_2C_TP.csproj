@@ -187,6 +187,7 @@
     <Compile Include="InvitacionPedidoGustoEmpanadaUsuario.cs">
       <DependentUpon>EmpanadasEntityModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Dto\EmailAccionDTO.cs" />
     <Compile Include="Models\Dto\EmailDTO.cs" />
     <Compile Include="Models\Dto\GustoEmpanadaDTO.cs" />
     <Compile Include="Models\Dto\GustoEmpanadasCantidadDTO.cs" />

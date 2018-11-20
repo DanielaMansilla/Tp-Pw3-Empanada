@@ -17,10 +17,9 @@ namespace W3_2018_2C_TP.Servicios
         public Pedido CrearPedidoDesdeCero(PedidoGustosEmpanadasDTO pge)
         {
             var pedido = pge.Pedido;
-          
+           
             pedido.FechaCreacion = DateTime.Now;
-
-            //pedido.IdUsuarioResponsable = Sesion.IdUsuario;
+            pedido.IdUsuarioResponsable =SessionManager.UsuarioSession.IdUsuario;
             pedido.IdEstadoPedido = (int)EstadosDelPedido.Abierto;
             List<GustoEmpanada> gustosSeleccionados = new List<GustoEmpanada>();
             foreach (var gusto in pge.GustosDisponibles)
