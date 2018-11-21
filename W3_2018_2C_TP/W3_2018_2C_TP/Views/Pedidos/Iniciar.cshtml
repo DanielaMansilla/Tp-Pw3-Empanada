@@ -7,7 +7,7 @@
 @using W3_2018_2C_TP.Models
 @model W3_2018_2C_TP.Models.Dto.PedidoGustosEmpanadasDTO
 <form action="/Pedidos/CrearPedido" method="Post" autocomplete="off">
-  
+
     <div class="container">
         <h2>Usted esta a punto de iniciar un pedido</h2>
         <hr />
@@ -19,91 +19,92 @@
                 @Html.ValidationSummary(false)
             </div>
         }
-        <div class="card">
-            <img class="card-img-top card-detail-max">
-            <div class="card-body">
-                <h4 class="card-title"></h4>
-                <p class="card-text">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Pedido.NombreNegocio)
-                        @Html.TextBoxFor(model => model.Pedido.NombreNegocio, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Pedido.NombreNegocio, "", new { @class = "text-danger" })
 
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Pedido.Descripcion)
-                        @Html.TextAreaFor(model => model.Pedido.Descripcion, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Pedido.Descripcion, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Pedido.PrecioUnidad)
-                        @Html.TextBoxFor(model => model.Pedido.PrecioUnidad, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Pedido.PrecioUnidad, "", new { @class = "text-danger" })
-                    </div>
+        <div class="col-md-4">
+            <div class="recuadro box-shadow bg-white">
+                <h5>Ingrese los datos del negocio</h5>
+                <hr />
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Pedido.PrecioDocena)
-                        @Html.TextBoxFor(model => model.Pedido.PrecioDocena, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Pedido.PrecioDocena, "", new { @class = "text-danger" })
-                    </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Pedido.NombreNegocio)
+                    @Html.TextBoxFor(model => model.Pedido.NombreNegocio, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Pedido.NombreNegocio, "", new { @class = "text-danger" })
 
-
-                </p>
-                <div class="col-md-4">
-                    <div class="recuadro box-shadow bg-white">
-                        <h5>Elija los gustos</h5>
-                        <hr />
-                        <table class="table m-0 w-100">
-                            <tr>
-                                <th>Gusto</th>
-                                <th class="th-check-column text-default-grid vertical-middle centrar">
-                                    <div class="check-column">
-                                        <input type="checkbox" id="selectAll">
-                                        <label for="selectAll"></label>
-                                    </div>
-                                </th>
-                            </tr>
-                            @for (int i = 0; i < Model.GustosDisponibles.Count; i++)
-                            {
-                                <tr>
-                                    <td>
-                                        <p> @Model.GustosDisponibles[i].Nombre </p>
-                                    </td>
-                                    <td class="th-check-column text-default-grid vertical-middle centrar">
-                                        <div class="check-column">
-                                            @Html.HiddenFor(p => p.GustosDisponibles[i].Id)
-                                            @Html.HiddenFor(p => p.GustosDisponibles[i].Nombre)
-                                            @Html.CheckBoxFor(p => p.GustosDisponibles[i].IsSelected)
-                                            @Html.LabelFor(p => p.GustosDisponibles[i].IsSelected, " ")
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </table>
-                        <span id="textValidacionGustos" class="field-validation-error text-danger text-center d-none mt-2 d-inline-block"></span>
-                    </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="recuadro box-shadow bg-white">
-                        <h5>3. Ingrese email de los invitados</h5>
-                        <hr />
-                        @for (int i = 0; i < Model.Invitados.Count; i++)
-                        {
-                            <input class="invitadosEditar" id="@Model.Invitados[i].Id" value="@Model.Invitados[i].Email" hidden="" />
-                        }
-                        <div id="divInvitado" class="form-group w-100">
-                            <input id="inputInvitados" data-role="tagsinput" class="form-control" type="text" placeholder="ejempl@email.com" />
-                        </div>
-                    </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Pedido.Descripcion)
+                    @Html.TextAreaFor(model => model.Pedido.Descripcion, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Pedido.Descripcion, "", new { @class = "text-danger" })
                 </div>
-                <div class="col-12 text-right mt-3">
-                    <input type="reset" value="Cancelar" id="btnCancelar" class="btn btn-cancelar mr-2" />
-                    <input type="submit" value="Iniciar" id="btnIniciar" class="btn btn-aceptar" />
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Pedido.PrecioUnidad)
+                    @Html.TextBoxFor(model => model.Pedido.PrecioUnidad, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Pedido.PrecioUnidad, "", new { @class = "text-danger" })
                 </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Pedido.PrecioDocena)
+                    @Html.TextBoxFor(model => model.Pedido.PrecioDocena, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Pedido.PrecioDocena, "", new { @class = "text-danger" })
+                </div>
+
 
             </div>
         </div>
+        <div class="col-md-4">
+            <div class="recuadro box-shadow bg-white">
+                <h5>Elija los gustos</h5>
+                <hr />
+                <table class="table m-0 w-100">
+                    <tr>
+
+                        <th class="th-check-column text-default-grid vertical-middle centrar">
+                            @*<div class="check-column">
+                                    <input type="checkbox" id="selectAll">
+                                    <label for="selectAll"></label>
+                                </div>*@
+                        </th>
+                    </tr>
+                    @for (int i = 0; i < Model.GustosDisponibles.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <p> @Model.GustosDisponibles[i].Nombre</p>
+                            </td>
+                            <td class="th-check-column text-default-grid vertical-middle centrar">
+                                <div class="check-column">
+                                    @Html.HiddenFor(p => p.GustosDisponibles[i].Id)
+                                    @Html.HiddenFor(p => p.GustosDisponibles[i].Nombre)
+                                    @Html.CheckBoxFor(p => p.GustosDisponibles[i].IsSelected)
+                                    @Html.LabelFor(p => p.GustosDisponibles[i].IsSelected, " ")
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </table>
+                <span id="textValidacionGustos" class="field-validation-error text-danger text-center d-none mt-2 d-inline-block"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="recuadro box-shadow bg-white">
+                <h5>Ingrese email de los invitados</h5>
+                <hr />
+                @for (int i = 0; i < Model.Invitados.Count; i++)
+                {
+                    <input class="invitadosEditar" id="@Model.Invitados[i].Id" value="@Model.Invitados[i].Email" hidden="" />
+                }
+                <div id="divInvitado" class="form-group w-100">
+                    <input id="inputInvitados" data-role="tagsinput" class="form-control" type="text" placeholder="ejempl@email.com" />
+                </div>
+            </div>
+        </div>
+        <div class="col-12 text-left mt-3">
+            <input type="reset" value="Cancelar" id="btnCancelar" class="btn btn-cancelar mr-2" />
+            <input type="submit" value="Iniciar" id="btnIniciar" class="btn btn-aceptar" />
+        </div>
+
     </div>
+   
 </form>
 
 
