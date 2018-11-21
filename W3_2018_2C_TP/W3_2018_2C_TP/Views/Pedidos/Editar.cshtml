@@ -1,6 +1,6 @@
 ﻿
 @{
-    //Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
+    Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
 }
 
 @model Pedido
@@ -20,12 +20,12 @@
         @Html.HiddenFor(p => p.IdPedido)
     </div>
 
-    <div>
+    <div class="form-group">
         @Html.LabelFor(p => p.NombreNegocio)
         @Html.Raw(": ")
         @Html.TextBoxFor(p => p.NombreNegocio)
     </div>
-    <div>
+    <div class="form-group">
         <label>Descripci&oacute;n: </label>
         @Html.TextBoxFor(p => p.Descripcion)
     </div>
@@ -34,12 +34,12 @@
         @Html.Raw(": ")
         @Html.TextBoxFor(p => p.PrecioUnidad, new { type = "number" })
     </div>
-    <div>
+    <div class="form-group">
         @Html.LabelFor(p => p.PrecioDocena)
         @Html.Raw(": ")
         @Html.TextBoxFor(p => p.PrecioDocena, new { type = "number" })
     </div>
-    <div>
+    <div class="form-group">
         @Html.LabelFor(p => p.GustoEmpanada)
         @Html.Raw(": ")
         @*@Html.DropDownListFor(p => p.GustoEmpanada, new SelectList(ViewBag.ListaGusto, "IdGustoEmpanada", "Nombre", new { type = "multiple" }))*@
