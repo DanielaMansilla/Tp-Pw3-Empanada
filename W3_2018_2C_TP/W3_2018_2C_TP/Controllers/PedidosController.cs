@@ -10,7 +10,7 @@ namespace W3_2018_2C_TP.Controllers
 {
     public class PedidosController : Controller
     {
-       
+
         //Se instancia los servicios
         private readonly PedidoServicio _servicioPedido = new PedidoServicio();
         private readonly GustoEmpanadasServicio _servicioGustoEmpanada = new GustoEmpanadasServicio();
@@ -18,19 +18,21 @@ namespace W3_2018_2C_TP.Controllers
         private readonly UsuarioServicio _servicioUsuario = new UsuarioServicio();
         private readonly EmailServicio _servicioEmail = new EmailServicio();
 
+        //punto 3) se inicia un pedido
         [HttpGet]
         public ActionResult Iniciar()
         {
-            PedidoGustosEmpanadasDTO pgeVm = new PedidoGustosEmpanadasDTO();
+            PedidoGustosEmpanadasDTO pedidoNuevo = new PedidoGustosEmpanadasDTO();
             var gustos = _servicioGustoEmpanada.GetAll();
             foreach (var gusto in gustos)
             {
-                pgeVm.GustosDisponibles.Add(new GustoEmpanadaDTO(gusto.IdGustoEmpanada, gusto.Nombre));
-
+                pedidoNuevo.GustosDisponibles.Add(new GustoEmpanadaDTO(gusto.IdGustoEmpanada, gusto.Nombre));
             }
             ViewBag.iniciar = true;
-            return View(pgeVm);
+            return View(pedidoNuevo);
         }
+
+        //punto 3) a) se inicia un pedido desde cero
         [HttpPost]
         public ActionResult CrearPedido(PedidoGustosEmpanadasDTO pedidoGustosEmpanadas)
         {
@@ -39,7 +41,7 @@ namespace W3_2018_2C_TP.Controllers
                 var pedidoNuevo = _servicioPedido.CrearPedidoDesdeCero(pedidoGustosEmpanadas);
 
                 var usuarios = _servicioInvitacionPedido.Crear(pedidoNuevo, pedidoGustosEmpanadas.Invitados, SessionManager.UsuarioSession.IdUsuario);
-                
+
                 //_servicioEmail.ArmarMailInicioPedido(usuarios, pedidoNuevo.IdPedido);
                 return RedirectToAction("Iniciado", new { id = pedidoNuevo.IdPedido });
 
@@ -49,7 +51,16 @@ namespace W3_2018_2C_TP.Controllers
             return View("Iniciar", pedidoGustosEmpanadas);
         }
 
-       
+        //punto 3) b) copiar pedido
+        [HttpPost]
+        public ActionResult CopiarPedido(int id)
+        {
+            PedidoGustosEmpanadasDTO pedido = _servicioPedido.CopiarPedido(id);
+            ViewBag.iniciar = true;
+            return View("Iniciar", pedido);
+        }
+
+        // punto 3) c) pedido iniciado
         [HttpGet]
         public ActionResult Iniciado()
         {
@@ -62,6 +73,7 @@ namespace W3_2018_2C_TP.Controllers
             return View();
         }
 
+        //punto 4) Listar pedidos
         [HttpGet]
         public ActionResult Lista()
         {
@@ -76,11 +88,11 @@ namespace W3_2018_2C_TP.Controllers
             return RedirectToAction("Login", "Home");
         }
 
+        //punto 5) Editar pedido
         [HttpGet]
         public ActionResult Editar(int id)
         {
             Pedido pedidoEditar = _servicioPedido.ObtenerPorId(id);
-
             if (pedidoEditar.EstadoPedido.Nombre == "Cerrado")
             {
                 return RedirectToAction("Detalle", "Pedidos", id);
@@ -92,7 +104,7 @@ namespace W3_2018_2C_TP.Controllers
                 ViewBag.UsuariosInvitados = _servicioPedido.ObtenerUsuariosInvitados(pedidoEditar.IdPedido);
 
                 return View(pedidoEditar);
-            }            
+            }
         }
 
         [HttpPost]
@@ -112,6 +124,7 @@ namespace W3_2018_2C_TP.Controllers
 
         }
 
+        //punto 6) Eliminar pedido
         [HttpGet]
         public ActionResult Eliminar(int id)
         {
@@ -123,16 +136,19 @@ namespace W3_2018_2C_TP.Controllers
         public ActionResult Eliminar(Pedido p)
         {
             Session["EliminarMensaje"] = "Pedido " + p.NombreNegocio + " ha sido eliminado exitosamente";
-            _servicioPedido.Eliminar(p.IdPedido);            
+            _servicioPedido.Eliminar(p.IdPedido);
             return RedirectToAction("Lista", "Pedidos");
         }
 
-        public ActionResult Elegir()
+        //punto 7) Elegir gustos
+        [HttpGet]
+        public ActionResult ElegirGustos()
         {
             var gustos = _servicioGustoEmpanada.GetAll();
             return View(gustos);
         }
 
+        //punto 8) Detalle del pedido
         [HttpGet]
         public ActionResult Detalle(int id)
         {
@@ -143,9 +159,7 @@ namespace W3_2018_2C_TP.Controllers
                 if (p.EstadoPedido.Nombre == "Cerrado" || p.IdUsuarioResponsable != SessionManager.UsuarioSession.IdUsuario)
                 {
                     return View(p);
-                }
-
-                else
+                }else
                 {
                     //Lo reenvio a la lista de pedidos
                     return RedirectToAction("Lista");
@@ -154,11 +168,10 @@ namespace W3_2018_2C_TP.Controllers
             else
             {
                 //Falta logica de redirigir a /Pedidos/Detalle/id cuando se loguee despues que lo pateo al Login
-
                 return RedirectToAction("Login", "Home");
             }
-            
+
         }
     }
-  
+
 }

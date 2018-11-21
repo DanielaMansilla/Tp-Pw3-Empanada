@@ -166,6 +166,17 @@ namespace W3_2018_2C_TP.Servicios
         {
             return Context.Pedido.FirstOrDefault(p => p.IdPedido == id).GustoEmpanada.ToList();
         }
+
+        //para copiar pedido punto 3) b)
+        public PedidoGustosEmpanadasDTO CopiarPedido(int id)
+        {
+            Pedido pedido = ObtenerPorId(id);//obtengo el id de pedido
+            var gustos = _servicioGustoEmpanada.GetAll();//obtengo todos los gustos de empanadas
+            var invitados = _servicioInvitacionPedido.GetByIdPedido(pedido, SessionManager.UsuarioSession.IdUsuario);//obtengo por el pedido, invitados 
+            var pedidoCopiado =  new PedidoGustosEmpanadasDTO(pedido, pedido.GustoEmpanada.ToList(), gustos, invitados);//
+
+            return pedidoCopiado;
+        }
     }
 }
 
