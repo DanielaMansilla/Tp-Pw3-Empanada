@@ -7,6 +7,8 @@ namespace W3_2018_2C_TP
 {
     public static class SessionManager
     {
+        internal static readonly object UsuarioLogin;
+
         public static Usuario UsuarioSession
         {
             get

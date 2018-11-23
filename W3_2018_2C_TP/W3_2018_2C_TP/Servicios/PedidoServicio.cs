@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Web;
 using W3_2018_2C_TP.Models.Dto;
+using W3_2018_2C_TP.Models.Enums;
 
 namespace W3_2018_2C_TP.Servicios
 {
@@ -12,7 +13,7 @@ namespace W3_2018_2C_TP.Servicios
     public class PedidoServicio
     {
         public Entities Context = new Entities();
-        private readonly GustoEmpanadaServicio _servicioGustoEmpanada = new GustoEmpanadaServicio();
+        private readonly GustoEmpanadasServicio _servicioGustoEmpanada = new GustoEmpanadasServicio();
         private readonly InvitacionPedidoServicio _servicioInvitacionPedido = new InvitacionPedidoServicio();
 
         public Pedido CrearPedidoDesdeCero(Pedido p)

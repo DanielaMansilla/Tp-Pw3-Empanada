@@ -21,6 +21,7 @@ namespace W3_2018_2C_TP.Controllers
             return View(pedidos);
         }
 
+        [HttpGet]
         public ActionResult Login()
         {
             return View();

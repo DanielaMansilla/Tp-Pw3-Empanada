@@ -13,7 +13,7 @@ namespace W3_2018_2C_TP.Controllers
        
         //Se instancia los servicios
         private readonly PedidoServicio _servicioPedido = new PedidoServicio();
-        private readonly GustoEmpanadaServicio _servicioGustoEmpanada = new GustoEmpanadaServicio();
+        private readonly GustoEmpanadasServicio _servicioGustoEmpanada = new GustoEmpanadasServicio();
         private readonly InvitacionPedidoServicio _servicioInvitacionPedido = new InvitacionPedidoServicio();
         private readonly UsuarioServicio _servicioUsuario = new UsuarioServicio();
         private readonly EmailServicio _servicioEmail = new EmailServicio();
@@ -80,10 +80,13 @@ namespace W3_2018_2C_TP.Controllers
             }
             if (Session["EliminarMensaje"] != null)
             {
-                ViewBag.Mensaje = Session["EliminarMensaje"].ToString();
+                List<Pedido> pedidos = _servicioPedido.ListarPedidosResponsableInvitado(SessionManager.UsuarioSession.IdUsuario);
+                return View(pedidos);
             }
-            List<Pedido> pedidos = _servicioPedido.ListarPedidosResponsableInvitado(SessionManager.UsuarioSession.IdUsuario);
-            return View(pedidos);
+
+            //Falta logica de redirigir a /Home/Lista cuando se loguee despues que lo pateo por aca
+
+            return RedirectToAction("Login", "Home");
         }
 
         [HttpGet]
@@ -145,14 +148,14 @@ namespace W3_2018_2C_TP.Controllers
             }
             if (ModelState.IsValid)
             {
-                //Logica de reenvio de email dependediendo la opcion elegida en el drop down list
-                //var idsReenviar = H
+                //Falta logica de reenvio de email dependediendo la opcion elegida en el drop down list
+
                 _servicioPedido.Editar(pedido);
                 return RedirectToAction("Lista", "Pedidos");
             }
             else
             {
-                return View(pedido.IdPedido);
+                return Redirect("/Pedidos/Editar/" + pedido.IdPedido);
             }
 
         }
@@ -203,16 +206,24 @@ namespace W3_2018_2C_TP.Controllers
             }
             Pedido p = _servicioPedido.ObtenerPorId(id);
 
-            if (p.EstadoPedido.Nombre == "Cerrado")
-            {
-                return View(p);
-            }
+                if (p.EstadoPedido.Nombre == "Cerrado" || p.IdUsuarioResponsable != SessionManager.UsuarioSession.IdUsuario)
+                {
+                    return View(p);
+                }
 
+                else
+                {
+                    //Lo reenvio a la lista de pedidos
+                    return RedirectToAction("Lista");
+                }
+            }
             else
             {
-                //Lo reenvio a la lista de pedidos
-                return RedirectToAction("Lista");
+                //Falta logica de redirigir a /Pedidos/Detalle/id cuando se loguee despues que lo pateo al Login
+
+                return RedirectToAction("Login", "Home");
             }
+            
         }
     }
   
