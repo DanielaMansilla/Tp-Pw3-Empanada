@@ -1,7 +1,17 @@
 ﻿
 @{
-    ViewBag.Title = "Iniciado";
+    Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
 }
+@model Pedido
+<div class="container text-center">
+    <div class="form-group">
+        <div class="row">
+            <h2>El Pedido se inició</h2>
+        </div>
+        <div class="row">
+            <p class="btn btn-danger">@Html.ActionLink("Editar Pedido", "Editar", new { id = Model.IdPedido }, new { @class = "btn btn-danger" })</p>
+        </div>
+    </div>
+</div>
 
-<h2>Pedidos Iniciado</h2>
 

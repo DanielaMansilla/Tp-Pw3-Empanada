@@ -11,25 +11,29 @@
                 <p>Ingrese su usuario y contraseña</p>
             </div>
             <div id="Login" class="col-md-12">
-                @using (Html.BeginForm("IniciarSesion", "Home", FormMethod.Post))
+                @using (Html.BeginForm("Login", "Home", FormMethod.Post))
                 {
                     <br />
                     <div class="form-group col-lg-offset-5">
-                        
+
                         <div class="row">
-                            @Html.TextBoxFor(c => c.Email, new { @class = "form-control", placeholder = "Email" })
+                            @Html.TextBoxFor(c => c.Email, new { @class = "form-control", placeholder = "Email", name = "email", id = "email" })
                         </div>
+                    </div>
+                    <div class="form-group col-lg-offset-0">
+                        @Html.ValidationMessageFor(c => c.Email, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group col-lg-offset-5">
-                        
+
                         <div class="row ">
-                            @Html.TextBoxFor(c => c.Password, new { @class = "form-control", placeholder = "Password" })
+                            @Html.TextBoxFor(c => c.Password, new { @class = "form-control", placeholder = "Password", type = "password", name = "password", id = "password" })
+                           
                         </div>
                     </div>
-                    <div class="forgot">
-                      
+                    <div class="form-group col-lg-offset-0">
+                        @Html.ValidationMessageFor(c => c.Password, "", new { @class = "text-danger" })
                     </div>
-                    <button type="submit" class="btn btn-primary">Ingresar</button>
+                    <button type="submit" id="btnIngresar" name="btnIngresar" class="btn btn-primary">Ingresar</button>
                 }
             </div>
         </div>

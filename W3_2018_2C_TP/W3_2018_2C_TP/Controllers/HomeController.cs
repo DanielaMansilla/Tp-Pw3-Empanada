@@ -13,24 +13,20 @@ namespace W3_2018_2C_TP.Controllers
         PedidoServicio pedidoServicio = new PedidoServicio();
         public ActionResult Index(Usuario user)
         {
-            if (Session["User"] != null)
-            {
-                List<Pedido> pedidos = pedidoServicio.obtenerListaPorUsuario(user);
-                return View(pedidos);
-            }
-            else
+            if (SessionManager.UsuarioSession == null)
             {
                 return RedirectToAction("Login");
             }
+            List<Pedido> pedidos = pedidoServicio.obtenerListaPorUsuario(user);
+            return View(pedidos);
         }
 
         public ActionResult Login()
         {
             return View();
         }
-
         [HttpPost]
-        public ActionResult IniciarSesion(Usuario u)
+        public ActionResult Login(Usuario u, string url)
         {
             if (ModelState.IsValid)
             {
@@ -39,17 +35,47 @@ namespace W3_2018_2C_TP.Controllers
                 //Usuario logueado actualmente lo guardo en session
                 SessionManager.UsuarioSession = user;
 
+                if (!string.IsNullOrEmpty(url))
+                {
+                    //si no es nulo redirige
+                    return Redirect(url);
+                }
                 return RedirectToAction("Lista", "Pedidos", user.IdUsuario);
             }
             else
             {
-                return View("Index", u);
+                return View(u);
             }
         }
-    
-        public ActionResult Error()
+
+        [HttpPost]
+        public ActionResult IniciarSesion(Usuario u,string url)
+        {
+            Usuario nuevo = new Usuario();
+            if (ModelState.IsValid)
             {
-                return View();
+                Usuario user = servicio.IniciarSesion(u);
+
+                //Usuario logueado actualmente lo guardo en session
+                SessionManager.UsuarioSession = user;
+
+                if (!string.IsNullOrEmpty(url))
+                {
+                    //si no es nulo redirige
+                    return Redirect(url);
+                }
+                return RedirectToAction("Lista", "Pedidos", user.IdUsuario);
+            }
+            else
+            {
+                return RedirectToAction("Index", nuevo);
             }
         }
+
+        public ActionResult Logout()
+        {
+            SessionManager.UsuarioSession = null;
+            return RedirectToAction("Login");
+        }
+    }
 }

@@ -148,6 +148,35 @@ namespace W3_2018_2C_TP.Servicios
             //    }
             //}
         }
+        public bool ValidarGustos(InvitacionPedido invitacion)
+        {
+            try
+            {
+                var estadoPedido = Contexto.InvitacionPedido.Where(i => i.Token == invitacion.Token).FirstOrDefault();
+
+                if (estadoPedido.Pedido.IdEstadoPedido == 2)
+                {
+                    return false;
+                }
+
+                else
+                {
+                    var pedido = Contexto.Pedido.Include("GustoEmpanada").Where(p => p.IdPedido == invitacion.IdPedido).ToList();
+                    foreach (var item in pedido)
+                    {
+                        if (!invitacion.Pedido.GustoEmpanada.Select(x => x.IdGustoEmpanada).Contains(item.GustoEmpanada))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 
 }

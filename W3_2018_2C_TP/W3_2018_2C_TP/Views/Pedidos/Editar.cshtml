@@ -1,84 +1,107 @@
 ﻿
 @{
-    //Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
+    Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
 }
-
 @model Pedido
 
-<h2>Edici&oacute;n de Pedido</h2>
 
-@Html.BeginForm("Editar", "Pedidos", FormMethod.Post)
+<script type="text/javascript">
+    $('select').selectpicker();
+</script>
+@using (Html.BeginForm("Editar", "Pedidos", FormMethod.Post))
 {
-    <div>
-        @Html.HiddenFor(p => p.IdPedido)
-    </div>
 
-    <div>
-        @Html.LabelFor(p => p.NombreNegocio)
-        @Html.Raw(": ")
-        @Html.TextBoxFor(p => p.NombreNegocio)
-    </div>
-    <div>
-        @Html.LabelFor(p => p.Descripcion)
-        @Html.Raw(": ")
-        @Html.TextBoxFor(p => p.Descripcion)
-    </div>
-    <div>
-        @Html.LabelFor(p => p.PrecioUnidad)
-        @Html.Raw(": ")
-        @Html.TextBoxFor(p => p.PrecioUnidad, new { type = "number" })
-    </div>
-    <div>
-        @Html.LabelFor(p => p.PrecioDocena)
-        @Html.Raw(": ")
-        @Html.TextBoxFor(p => p.PrecioDocena, new { type = "number" })
-    </div>
-    <div>
-        @Html.LabelFor(p => p.GustoEmpanada)
-        @Html.Raw(": ")
-        @Html.DropDownListFor(p => p.GustoEmpanada, new SelectList(ViewBag.ListaGusto, "IdGustoEmpanada", "Nombre", new { type = "multiple" }))
-    </div>
-    <div>
-        @Html.Label("Email Usuarios Invitados: ")
-        <select name="IdUsuario">
-            @foreach (Usuario u in ViewBag.UsuariosInvitados)
-            {
-                if (u.InvitacionPedido.FirstOrDefault(i => i.IdPedido == Model.IdPedido).Completado)
-                {
-                    <option value="@u.IdUsuario">@u.Email @Html.Raw("(SI)")</option>
-                }
-                else
-                {
-                    <option value="@u.IdUsuario">@u.Email @Html.Raw("(NO)")</option>
-                }
-            }
-        </select>
-    </div>
+    <div class="container">
+        <h2>Editar pedido</h2>
+        <hr />
 
-    <div>
-        @Html.ValidationMessageFor(p => p.NombreNegocio)
-        @Html.ValidationMessageFor(p => p.PrecioUnidad)
-        @Html.ValidationMessageFor(p => p.PrecioDocena)
-        @Html.ValidationMessageFor(p => p.GustoEmpanada)
-    </div>
+        @*@Html.HiddenFor(model => model.Pedido.IdPedido)*@
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger" role="alert">
+                @Html.ValidationSummary(false)
+            </div>
+        }
 
-    <div>
-        @Html.Label("Re-enviar Invitación: ")
-        <select name="IdReEnviarInvitacion" id="IdReEnviarInvitacion">
-            <option value="0">A Nadie</option>
-            <option value="1">Re-enviar Invitaci&oacute;n a Todos</option>
-            <option value="2">Enviar s&oacute;lo a los Nuevos”</option>
-            <option value="3">Re-enviar s&oacute;lo a los que no eligieron gustos</option>
-        </select>
-        <br />
-        <a href="/Pedidos/Editar/">
-            <button type="button" class="btn btn-dark">Guardar</button>
-        </a>
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Nombre de negocio</label>
+                        @Html.TextBoxFor(model => model.NombreNegocio, new { @class = "form-control", placeholder = "Nombre de Negocio" })
+                        @Html.ValidationMessageFor(model => model.NombreNegocio, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-3">
+                        <label>Precio por unidad</label>
+                        @Html.TextBoxFor(model => model.PrecioUnidad, new { @class = "form-control", placeholder = "Precio por unidad" })
+                        @Html.ValidationMessageFor(model => model.PrecioUnidad, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-3">
+                        <label>Precio por docena</label>
+                        @Html.TextBoxFor(model => model.PrecioDocena, new { @class = "form-control", placeholder = "Precio por docena" })
+                        @Html.ValidationMessageFor(model => model.PrecioDocena, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-3">
+                        <label>Descripción</label>
+                        @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control", placeholder = "Descripción" })
+                        @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-4">
+                        <select class="selectpicker" multiple data-live-search="true" title="Seleccione gustos.." name="GustoDeEmpanadaSeleccionados">
+                            @foreach (var item in Model.GustoEmpanada)
+                            {
+                                <option value="@item.IdGustoEmpanada" selected>@item.Nombre</option>
+                            }
+                            @foreach (var item in ViewBag.Lista as MultiSelectList)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="selectpicker" multiple data-live-search="true" title="Seleccione invitados.." name="UsuariosSeleccionados">
+                            @foreach (var item in ViewBag.Mailseleccionados as MultiSelectList)
+                            {
+                                <option value="@item.Value" selected>@item.Text</option>
+                            }
+                            @foreach (var item in ViewBag.Mails as MultiSelectList)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="selectpicker" data-live-search="true" title="Re-enviar invitación.." name="UsuariosSeleccionados">
+                            <option value="0">A Nadie</option>
+                            <option value="1">Re - enviar Invitación a Todos</option>
+                            <option value="2">Enviar sólo a los Nuevos</option>
+                            <option value="3">Re - enviar sólo a los que no eligieron gustos</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2 col-lg-offset-3">
+                        <input type="reset" value="Cancelar" id="btnCancelar" class="btn btn-block btn-danger" />
+                    </div>
+                    <div class="col-md-2">
+                        <input type="submit" value="Guardar" id="btnGuardar" name="btnGuardar" class="btn btn-block btn-info" />
+                    </div>
+                    <div class="col-md-2">
+                        <input type="submit" value="Confirmar" id="btnConfirmar" 
+                               onclick="return confirm('¿Está seguro que desea Confirmar el pedido? Una vez confirmado no se podrá modificar.')" name="btnConfirmar" class="btn btn-block btn-info" />
+                    </div>
+                </div>
+            </div>
+            <br /><br />
+        </div>
+
     </div>
 
 }
-
-<div class="=">
-    <button type="button" class="btn btn-dark" id="btnConfirmar" name="btnConfirmar">Confirmar</button>
-</div>
-

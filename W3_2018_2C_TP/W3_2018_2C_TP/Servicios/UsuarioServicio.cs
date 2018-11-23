@@ -15,5 +15,10 @@ namespace W3_2018_2C_TP.Servicios
                  .Where(c => c.Password == u.Password).First();
             return estado;
         }
+
+        public List<Usuario> obtenerMailsUsuarios()
+        {
+            return Context.Usuario.ToList();
+        }
     }
 }

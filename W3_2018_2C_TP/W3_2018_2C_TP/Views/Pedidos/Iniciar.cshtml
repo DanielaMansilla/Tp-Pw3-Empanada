@@ -1,112 +1,91 @@
 ﻿@{
     Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
 }
-@{
-    ViewBag.Title = "Agregar";
-}
-@using W3_2018_2C_TP.Models
-@model W3_2018_2C_TP.Models.Dto.PedidoGustosEmpanadasDTO
-<form action="/Pedidos/CrearPedido" method="Post" autocomplete="off">
-  
-    <div class="container">
-        <h2>Usted esta a punto de iniciar un pedido</h2>
-        <hr />
 
-        @Html.HiddenFor(model => model.Pedido.IdPedido)
-        @if (!ViewData.ModelState.IsValid)
-        {
-            <div class="alert alert-danger" role="alert">
-                @Html.ValidationSummary(false)
-            </div>
-        }
-        <div class="card">
-            <img class="card-img-top card-detail-max">
-            <div class="card-body">
-                <h4 class="card-title"></h4>
-                <p class="card-text">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Pedido.NombreNegocio)
-                        @Html.TextBoxFor(model => model.Pedido.NombreNegocio, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Pedido.NombreNegocio, "", new { @class = "text-danger" })
-
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Pedido.Descripcion)
-                        @Html.TextAreaFor(model => model.Pedido.Descripcion, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Pedido.Descripcion, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Pedido.PrecioUnidad)
-                        @Html.TextBoxFor(model => model.Pedido.PrecioUnidad, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Pedido.PrecioUnidad, "", new { @class = "text-danger" })
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Pedido.PrecioDocena)
-                        @Html.TextBoxFor(model => model.Pedido.PrecioDocena, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Pedido.PrecioDocena, "", new { @class = "text-danger" })
-                    </div>
+@model Pedido
 
 
-                </p>
-                <div class="col-md-4">
-                    <div class="recuadro box-shadow bg-white">
-                        <h5>Elija los gustos</h5>
-                        <hr />
-                        <table class="table m-0 w-100">
-                            <tr>
-                                <th>Gusto</th>
-                                <th class="th-check-column text-default-grid vertical-middle centrar">
-                                    <div class="check-column">
-                                        <input type="checkbox" id="selectAll">
-                                        <label for="selectAll"></label>
-                                    </div>
-                                </th>
-                            </tr>
-                            @for (int i = 0; i < Model.GustosDisponibles.Count; i++)
-                            {
-                                <tr>
-                                    <td>
-                                        <p> @Model.GustosDisponibles[i].Nombre </p>
-                                    </td>
-                                    <td class="th-check-column text-default-grid vertical-middle centrar">
-                                        <div class="check-column">
-                                            @Html.HiddenFor(p => p.GustosDisponibles[i].Id)
-                                            @Html.HiddenFor(p => p.GustosDisponibles[i].Nombre)
-                                            @Html.CheckBoxFor(p => p.GustosDisponibles[i].IsSelected)
-                                            @Html.LabelFor(p => p.GustosDisponibles[i].IsSelected, " ")
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </table>
-                        <span id="textValidacionGustos" class="field-validation-error text-danger text-center d-none mt-2 d-inline-block"></span>
-                    </div>
+<script type="text/javascript">
+    $('select').selectpicker();
+</script>
+@using (Html.BeginForm("CrearPedido", "Pedidos", FormMethod.Post))
+{
+
+        <div class="container">
+            <h2>Usted esta a punto de iniciar un pedido</h2>
+            <hr />
+
+            @*@Html.HiddenFor(model => model.Pedido.IdPedido)*@
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger" role="alert">
+                    @Html.ValidationSummary(false)
                 </div>
-                <div class="col-md-4">
-                    <div class="recuadro box-shadow bg-white">
-                        <h5>3. Ingrese email de los invitados</h5>
-                        <hr />
-                        @for (int i = 0; i < Model.Invitados.Count; i++)
-                        {
-                            <input class="invitadosEditar" id="@Model.Invitados[i].Id" value="@Model.Invitados[i].Email" hidden="" />
-                        }
-                        <div id="divInvitado" class="form-group w-100">
-                            <input id="inputInvitados" data-role="tagsinput" class="form-control" type="text" placeholder="ejempl@email.com" />
+            }
+
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>Nombre de negocio</label>
+                            @Html.TextBoxFor(model => model.NombreNegocio, new { @class = "form-control", placeholder = "Nombre de Negocio" })
+                            @Html.ValidationMessageFor(model => model.NombreNegocio, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-3">
+                            <label>Precio por unidad</label>
+                            @Html.TextBoxFor(model => model.PrecioUnidad, new { @class = "form-control", placeholder = "Precio por unidad" })
+                            @Html.ValidationMessageFor(model => model.PrecioUnidad, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-3">
+                            <label>Precio por docena</label>
+                            @Html.TextBoxFor(model => model.PrecioDocena, new { @class = "form-control", placeholder = "Precio por docena" })
+                            @Html.ValidationMessageFor(model => model.PrecioDocena, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-3">
+                            <label>Descripción</label>
+                            @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control", placeholder = "Descripción" })
+                            @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
-                <div class="col-12 text-right mt-3">
-                    <input type="reset" value="Cancelar" id="btnCancelar" class="btn btn-cancelar mr-2" />
-                    <input type="submit" value="Iniciar" id="btnIniciar" class="btn btn-aceptar" />
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4 col-lg-offset-2">
+                            <select class="selectpicker" multiple data-live-search="true" title="Seleccione gustos.." name="GustoDeEmpanadaSeleccionados">
+                                @foreach (var item in ViewBag.Lista as MultiSelectList)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="selectpicker" multiple data-live-search="true" title="Seleccione invitados.." name="UsuariosSeleccionados">
+                                @foreach (var item in ViewBag.Mails as MultiSelectList)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                        </div>
+
+                    </div>
                 </div>
-
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-2 col-lg-offset-4">
+                            <input type="reset" value="Cancelar" id="btnCancelar" class="btn btn-block btn-danger" />
+                        </div>
+                        <div class="col-md-2">
+                            <input type="submit" value="Iniciar" id="btnIniciar" class="btn btn-block btn-info" />
+                        </div>
+                    </div>
+                </div>
+                <br /><br />
             </div>
+
         </div>
-    </div>
-</form>
 
-
+}
 
 
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Web;
 using W3_2018_2C_TP.Models.Dto;
 
@@ -12,33 +14,47 @@ namespace W3_2018_2C_TP.Servicios
         public Entities Context = new Entities();
         private readonly GustoEmpanadaServicio _servicioGustoEmpanada = new GustoEmpanadaServicio();
         private readonly InvitacionPedidoServicio _servicioInvitacionPedido = new InvitacionPedidoServicio();
-        //public void Agregar(Pedido p)
-        //{
-        //    var estado = Context.EstadoPedido.FirstOrDefault(e => e.IdEstadoPedido == 1);
-        //    var user = Context.Usuario.FirstOrDefault(u => u.IdUsuario == 1);
-        //    p.FechaCreacion = DateTime.Now ;
-        //    p.EstadoPedido = estado;
-        //    p.Usuario = user;
-        //    Context.Pedido.Add(p);
-        //    Context.SaveChanges();
-        //}
-        public Pedido CrearPedidoDesdeCero(PedidoGustosEmpanadasDTO pge)
+
+        public Pedido CrearPedidoDesdeCero(Pedido p)
         {
-            var pedido = pge.Pedido;
+            var pedido = p;
           
             pedido.FechaCreacion = DateTime.Now;
-            //pedido.IdUsuarioResponsable = Sesion.IdUsuario;
-            //pedido.IdEstadoPedido = (int)EstadosPedido.Abierto;
+            pedido.IdUsuarioResponsable = SessionManager.UsuarioSession.IdUsuario;
+            pedido.IdEstadoPedido = 1;
             List<GustoEmpanada> gustosSeleccionados = new List<GustoEmpanada>();
-            foreach (var gusto in pge.GustosDisponibles)
+            foreach (var gusto in p.GustoDeEmpanadaSeleccionados)
             {
-                if (gusto.IsSelected)
-                    gustosSeleccionados.Add(Context.GustoEmpanada.FirstOrDefault(ge => ge.IdGustoEmpanada == gusto.Id));
+                    gustosSeleccionados.Add(Context.GustoEmpanada.FirstOrDefault(ge => ge.IdGustoEmpanada == gusto));
             }
            
             pedido.GustoEmpanada = gustosSeleccionados;
             Context.Pedido.Add(pedido);
+
+            if (p.UsuariosSeleccionados != null)
+            {
+                foreach (var id in pedido.UsuariosSeleccionados)
+                {
+                    InvitacionPedido invitacion = new InvitacionPedido();
+
+                    invitacion.IdPedido = pedido.IdPedido;
+                    invitacion.Completado = false;
+                    invitacion.Token = Guid.NewGuid();
+                    invitacion.IdUsuario = id;
+                    Context.InvitacionPedido.Add(invitacion);
+                    EnviarCorreo(invitacion);
+                }
+            }
+
+            InvitacionPedido invitacionResponsable = new InvitacionPedido();
+
+            invitacionResponsable.IdPedido = pedido.IdPedido;
+            invitacionResponsable.Completado = false;
+            invitacionResponsable.Token = Guid.NewGuid();
+            invitacionResponsable.IdUsuario = pedido.IdUsuarioResponsable;
+            Context.InvitacionPedido.Add(invitacionResponsable);
             Context.SaveChanges();
+            EnviarCorreo(invitacionResponsable);
             return pedido;
         }
 
@@ -173,6 +189,33 @@ namespace W3_2018_2C_TP.Servicios
         public List<GustoEmpanada> ObtenerGustosPorPedido(int id)
         {
             return Context.Pedido.FirstOrDefault(p => p.IdPedido == id).GustoEmpanada.ToList();
+        }
+
+        public void EnviarCorreo(InvitacionPedido invitacion)
+        {
+            var fromAddress = new MailAddress("diego.gustavo.sejas2013@gmail.com", "From Name");
+            var toAddress = new MailAddress("diego.gustavo.sejas2013@gmail.com", "To Name");
+            string fromPassword = "diegoozzy";
+            string subject = "Subject";
+            string body = "<h1>Risitto Empanadas</h1><br> Invitacion: " + HttpContext.Current.Request.Url.Authority + "/pedidos/elegir/" + invitacion.Token;
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
+            using (var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                smtp.Send(message);
+            }
         }
     }
 }

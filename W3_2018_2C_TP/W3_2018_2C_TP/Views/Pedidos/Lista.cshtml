@@ -1,14 +1,14 @@
 ﻿
 @{
-    //Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
+    Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
 }
 
 @model List<Pedido>
 <div class="container">
     <h2>Lista de Pedidos</h2>
     <div class="table-responsive">
-        <table class="table table-dark table-bordered">
-            <tr>
+        <table class="table table-striped">
+            <tr class="bg-warning">
                 <th>Fecha Creaci&oacute;n</th>
                 <th>Nombre Negocio</th>
                 <th>Estado</th>
@@ -32,16 +32,24 @@
                         }
                     </td>
                     <td>
-                        <a href="/Pedidos/Editar/@p.IdPedido">Editar</a>
-                        <a href="/Pedidos/Elegir/@p.IdPedido">Editar</a>
-                        <a href="/Pedidos/Eliminar/@p.IdPedido">Editar</a>
+                        @if (p.EstadoPedido.Nombre == "Abierto")
+                        {
+                            <a href="/Pedidos/Editar/@p.IdPedido">Editar</a>
+                            <a href="/Pedidos/Elegir/@p.IdPedido">- Elegir</a>
+                            <a href="/Pedidos/Eliminar/@p.IdPedido">- Eliminar</a>
+                        }
+                        else
+                        {
+                            <a href="/Pedidos/Elegir/@p.IdPedido">Elegir</a>
+                            <a href="/Pedidos/Eliminar/@p.IdPedido">- Eliminar</a>
+                        }
                     </td>
                 </tr>
             }
         </table>
         <p>
             <a href="/Pedidos/Iniciar/">
-                <button type="button" class="btn btn-dark">Nuevo</button>
+                <button type="button" id="btnNuevoPedido" class="btn btn-success">Nuevo pedido</button>
             </a>
         </p>
     </div>
