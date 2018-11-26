@@ -27,12 +27,13 @@
 
                         <div class="row ">
                             @Html.TextBoxFor(c => c.Password, new { @class = "form-control", placeholder = "Password", type = "password", name = "password", id = "password" })
-                           
+
                         </div>
                     </div>
                     <div class="form-group col-lg-offset-0">
                         @Html.ValidationMessageFor(c => c.Password, "", new { @class = "text-danger" })
                     </div>
+                    @Html.Hidden("url", @Request.QueryString["url"])
                     <button type="submit" id="btnIngresar" name="btnIngresar" class="btn btn-primary">Ingresar</button>
                 }
             </div>

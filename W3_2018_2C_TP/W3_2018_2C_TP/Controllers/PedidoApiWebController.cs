@@ -15,28 +15,16 @@ namespace W3_2018_2C_TP.Controllers
         [HttpPost]
         public IHttpActionResult ConfirmarGustos([FromBody]ConfirmarGusto datos)
         {
-            //bool estado = servicio.ValidarGustos(datos);
-            //if (estado)
-            //{
-            //    //return Json(new { success = false, Resultado = "ERROR", Mensaje = "ESTO ES UN ERROR" });
-            //    /*
-            //     success: function (Resultado) {
-            //            if (Resultado.success) {
-            //                alert(Resultado);
-            //            } else {
-            //                // OTRA COSA
-            //            }                          
-            //        },
-            //     */
-            //    //return null;
-            //    return Json(new { Resultado = "OK", Mensaje = "Gustos elegidos satisfactoriamente" });
-            //}
-            //else
-            //{
-            //    //GUARDAR invitacion
-            //    return Json(new { Resultado = "OK", Mensaje = "Gustos elegidos satisfactoriamente" });
-            //}
-            return Json(new { Resultado = "OK", Mensaje = "Gustos elegidos satisfactoriamente" });
+            bool estado = servicio.ValidarGustos(datos);
+            if (estado)
+            {
+                //return null;
+                return Json(new { Resultado = "OK", Mensaje = "Gustos elegidos satisfactoriamente" });
+            }
+            else
+            {
+                return Json(new { success = false, Resultado = "ERROR", Mensaje = "ESTO ES UN ERROR" });
+            }
         }
     }
 }

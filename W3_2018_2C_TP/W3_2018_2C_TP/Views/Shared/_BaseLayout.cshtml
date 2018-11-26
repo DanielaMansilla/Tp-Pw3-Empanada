@@ -10,16 +10,17 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,700%7CCabin:400%7CDancing+Script" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="~/Content/owl.carousel.css" />
     <link type="text/css" rel="stylesheet" href="~/Content/owl.theme.default.css" />
-    <link type="text/css" rel="stylesheet" href="~/Content/estiloform.css"/>
+    <link type="text/css" rel="stylesheet" href="~/Content/estiloform.css" />
 
     <link rel="stylesheet" href="~/Content/font-awesome.min.css">
     <link type="text/css" rel="stylesheet" href="~/Content/style.css" />
 
-    <link rel="stylesheet" href="~/Content/bootstrap-select.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <link rel="stylesheet" href="~/Content/bootstrap-select.min.css" />
     <script src="~/Scripts/bootstrap-select.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
 </head>
 <body>
 
@@ -52,5 +53,7 @@
     <!--Agregue el bundle para las validaciones de lado cliente-->
     @Scripts.Render("~/bundles/validate")
     @RenderSection("scripts", required: false)
+    <script src="~/Scripts/jquery.dataTables.js"></script>
+    <link rel="stylesheet" href="~/Content/jquery.dataTables.min.css" />
 </body>
 </html>

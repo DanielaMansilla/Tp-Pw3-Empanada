@@ -24,7 +24,7 @@ namespace W3_2018_2C_TP.Controllers
             if (SessionManager.UsuarioSession == null)
             {
                 string url = Url.Content(Request.Url.PathAndQuery);
-                return RedirectToAction("Login", "Home", new { redirigir = url });
+                return RedirectToAction("Login", "Home", new { url });  
             }
             List<GustoEmpanada> listaGustos = _servicioGustoEmpanada.GetAll();
             var mails = _servicioUsuario.obtenerMailsUsuarios();
@@ -40,7 +40,7 @@ namespace W3_2018_2C_TP.Controllers
             if (SessionManager.UsuarioSession == null)
             {
                 string url = Url.Content(Request.Url.PathAndQuery);
-                return RedirectToAction("Login", "Home", new { redirigir = url });
+                return RedirectToAction("Login", "Home", new { url });
             }
             if (pedido.GustoDeEmpanadaSeleccionados == null)
             {
@@ -76,7 +76,7 @@ namespace W3_2018_2C_TP.Controllers
             if (SessionManager.UsuarioSession == null)
             {
                 string url = Url.Content(Request.Url.PathAndQuery);
-                return RedirectToAction("Login", "Home", new { redirigir = url });
+                return RedirectToAction("Login", "Home", new { url });
             }
            // if (Session["EliminarMensaje"] != null)
            // {
@@ -95,7 +95,7 @@ namespace W3_2018_2C_TP.Controllers
             if (SessionManager.UsuarioSession == null)
             {
                 string url = Url.Content(Request.Url.PathAndQuery);
-                return RedirectToAction("Login", "Home", new { redirigir = url });
+                return RedirectToAction("Login", "Home", new {url });
             }
             Pedido pedido = _servicioPedido.ObtenerPorId(id);
 
@@ -145,7 +145,7 @@ namespace W3_2018_2C_TP.Controllers
             if (SessionManager.UsuarioSession == null)
             {
                 string url = Url.Content(Request.Url.PathAndQuery);
-                return RedirectToAction("Login", "Home", new { redirigir = url });
+                return RedirectToAction("Login", "Home", new { url });
             }
             if (ModelState.IsValid)
             {
@@ -167,7 +167,7 @@ namespace W3_2018_2C_TP.Controllers
             if (SessionManager.UsuarioSession == null)
             {
                 string url = Url.Content(Request.Url.PathAndQuery);
-                return RedirectToAction("Login", "Home", new { redirigir = url });
+                return RedirectToAction("Login", "Home", new { url });
             }
             ViewBag.Cantidad = _servicioPedido.ObtenerInvitacionesConfirmadas(id);
             return View(_servicioPedido.ObtenerPorId(id));
@@ -179,7 +179,7 @@ namespace W3_2018_2C_TP.Controllers
             if (SessionManager.UsuarioSession == null)
             {
                 string url = Url.Content(Request.Url.PathAndQuery);
-                return RedirectToAction("Login", "Home", new { redirigir = url });
+                return RedirectToAction("Login", "Home", new { url });
             }
             Session["EliminarMensaje"] = "Pedido " + p.NombreNegocio + " ha sido eliminado exitosamente";
             _servicioPedido.Eliminar(p.IdPedido);            
@@ -192,21 +192,17 @@ namespace W3_2018_2C_TP.Controllers
             if (SessionManager.UsuarioSession == null)
             {
                 string url = Url.Content(Request.Url.PathAndQuery);
-                return RedirectToAction("Login", "Home", new { redirigir = url });
+                return RedirectToAction("Login", "Home", new { url });
             }
-            //var gustos = _servicioGustoEmpanada.GetAll();
-            //return View(gustos);
+
             Pedido pedido = _servicioPedido.ObtenerPorId(id);
-
+            InvitacionPedido token = _servicioInvitacionPedido.GetInvitacionPedidoPorPedido(id, SessionManager.UsuarioSession.IdUsuario);
             List<GustoEmpanada> InitGustos = _servicioPedido.ObtenerGustosPorPedido(id);
-            List<int> lista = new List<int>();
-
-            //foreach (GustoEmpanada item in pedido.GustoEmpanada)
-            //{
-            //    InitGustos.Remove(item);
-            //}
-            ViewBag.ListaNueva = lista;
+            //List<int> lista = new List<int>();
+            //ViewBag.ListaNueva = lista;
+            ViewBag.Token = token.Token;
             ViewBag.Lista = new MultiSelectList(InitGustos, "IdGustoEmpanada", "Nombre");
+
             return View(pedido);
         }
 
@@ -216,7 +212,7 @@ namespace W3_2018_2C_TP.Controllers
             if (SessionManager.UsuarioSession == null)
             {
                 string url = Url.Content(Request.Url.PathAndQuery);
-                return RedirectToAction("Login", "Home", new { redirigir = url });
+                return RedirectToAction("Login", "Home", new { url });
             }
             Pedido p = _servicioPedido.ObtenerPorId(id);
 
