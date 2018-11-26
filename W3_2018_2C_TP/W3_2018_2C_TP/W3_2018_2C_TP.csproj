@@ -331,6 +331,7 @@
     <Content Include="Views\Pedidos\Elegir.cshtml" />
     <Content Include="Views\Pedidos\Detalle.cshtml" />
     <Content Include="Views\Error\Error.cshtml" />
+    <Content Include="Views\Pedidos\Copiar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -128,15 +128,12 @@ namespace W3_2018_2C_TP.Controllers
             }
             else
             {
-
                 ViewBag.Lista = new MultiSelectList(InitGustos, "IdGustoEmpanada", "Nombre");
                 ViewBag.Mails = new MultiSelectList(mails, "IdUsuario", "Email");
                 ViewBag.Mailseleccionados = new MultiSelectList(mailsNuevos, "IdUsuario", "Email");
 
                 return View(pedido);
             }
-          
-          
         }
 
         [HttpPost]
@@ -234,6 +231,53 @@ namespace W3_2018_2C_TP.Controllers
             //    return RedirectToAction("Login", "Home");
             //}
             
+        }
+
+        [HttpGet]
+        public ActionResult Copiar(int id)
+        {
+            if (SessionManager.UsuarioSession == null)
+            {
+                string url = Url.Content(Request.Url.PathAndQuery);
+                return RedirectToAction("Login", "Home", new { url });
+            }
+            Pedido pedido = _servicioPedido.ObtenerPorId(id);
+
+            List<GustoEmpanada> InitGustos = _servicioPedido.ObtenerGustos();
+
+            foreach (GustoEmpanada item in pedido.GustoEmpanada)
+            {
+                InitGustos.Remove(item);
+            }
+
+            List<Usuario> mails = _servicioUsuario.obtenerMailsUsuarios();
+            List<Usuario> mailsNuevos = new List<Usuario>();
+
+            for (int i = 0; i < mails.Count; i++)
+            {
+                foreach (InvitacionPedido item in pedido.InvitacionPedido)
+                {
+                    if (mails[i].IdUsuario == item.IdUsuario && item.IdUsuario != SessionManager.UsuarioSession.IdUsuario)
+                    {
+                        mailsNuevos.Add(mails[i]);
+                        mails.Remove(mails[i]);
+                        break;
+                    }
+                }
+            }
+
+            if (pedido.EstadoPedido.Nombre == "Cerrado")
+            {
+                return RedirectToAction("Detalle", "Pedidos", pedido.IdPedido);
+            }
+            else
+            {
+                ViewBag.Lista = new MultiSelectList(InitGustos, "IdGustoEmpanada", "Nombre");
+                ViewBag.Mails = new MultiSelectList(mails, "IdUsuario", "Email");
+                ViewBag.Mailseleccionados = new MultiSelectList(mailsNuevos, "IdUsuario", "Email");
+
+                return View(pedido);
+            }
         }
     }
   
