@@ -148,16 +148,16 @@
   // set data-selected on select element if the value has been programmatically selected
   // prior to initialization of bootstrap-select
   // * consider removing or replacing an alternative method *
-  var valHooks = {
-    useDefault: false,
-    _set: $.valHooks.select.set
-  };
+  //var valHooks = {
+  //  useDefault: false,
+  //  _set: $.valHooks.select.set
+  //};
 
-  $.valHooks.select.set = function (elem, value) {
-    if (value && !valHooks.useDefault) $(elem).data('selected', true);
+  //$.valHooks.select.set = function (elem, value) {
+  //  if (value && !valHooks.useDefault) $(elem).data('selected', true);
 
-    return valHooks._set.apply(this, arguments);
-  };
+  //  return valHooks._set.apply(this, arguments);
+  //};
 
   var changed_arguments = null;
 
@@ -420,10 +420,10 @@
     var that = this;
 
     // bootstrap-select has been initialized - revert valHooks.select.set back to its original function
-    if (!valHooks.useDefault) {
-      $.valHooks.select.set = valHooks._set;
-      valHooks.useDefault = true;
-    }
+    //if (!valHooks.useDefault) {
+    //  $.valHooks.select.set = valHooks._set;
+    //  valHooks.useDefault = true;
+    //}
 
     this.$element = $(element);
     this.$newElement = null;

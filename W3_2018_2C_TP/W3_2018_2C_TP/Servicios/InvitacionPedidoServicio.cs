@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using W3_2018_2C_TP.Models;
 using W3_2018_2C_TP.Models.Dto;
 
 namespace W3_2018_2C_TP.Servicios
@@ -148,27 +149,15 @@ namespace W3_2018_2C_TP.Servicios
             //    }
             //}
         }
-        public bool ValidarGustos(InvitacionPedido invitacion)
+        public bool ValidarGustos(ConfirmarGusto datos)
         {
             try
             {
-                var estadoPedido = Contexto.InvitacionPedido.Where(i => i.Token == invitacion.Token).FirstOrDefault();
+                var estadoPedido = Contexto.InvitacionPedido.Where(i => i.Token == datos.Token).FirstOrDefault();
 
                 if (estadoPedido.Pedido.IdEstadoPedido == 2)
                 {
                     return false;
-                }
-
-                else
-                {
-                    var pedido = Contexto.Pedido.Include("GustoEmpanada").Where(p => p.IdPedido == invitacion.IdPedido).ToList();
-                    foreach (var item in pedido)
-                    {
-                        if (!invitacion.Pedido.GustoEmpanada.Select(x => x.IdGustoEmpanada).Contains(item.GustoEmpanada))
-                        {
-                            return false;
-                        }
-                    }
                 }
                 return true;
             }

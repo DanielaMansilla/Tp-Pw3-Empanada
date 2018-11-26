@@ -34,14 +34,14 @@
                     <td>
                         @if (p.EstadoPedido.Nombre == "Abierto")
                         {
-                            <a href="/Pedidos/Editar/@p.IdPedido">Editar</a>
-                            <a href="/Pedidos/Elegir/@p.IdPedido">- Elegir</a>
-                            <a href="/Pedidos/Eliminar/@p.IdPedido">- Eliminar</a>
+                            <a href="/Pedidos/Editar/@p.IdPedido" class="btn btn-info">Editar</a>
+                            <a href="/Pedidos/Elegir/@p.IdPedido" class="btn btn-success">Elegir</a>
+                            <a href="/Pedidos/Eliminar/@p.IdPedido" class="btn btn-danger">Eliminar</a>
                         }
                         else
                         {
-                            <a href="/Pedidos/Elegir/@p.IdPedido">Elegir</a>
-                            <a href="/Pedidos/Eliminar/@p.IdPedido">- Eliminar</a>
+                            <a href="/Pedidos/Elegir/@p.IdPedido" class="btn btn-success">Elegir</a>
+                            <a href="/Pedidos/Eliminar/@p.IdPedido" class="btn btn-danger">Eliminar</a>
                         }
                     </td>
                 </tr>

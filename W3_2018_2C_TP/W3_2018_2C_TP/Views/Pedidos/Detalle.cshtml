@@ -1,44 +1,79 @@
-﻿
-@{
-    //Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
+﻿@{
+    Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
 }
 
 @model Pedido
 
-<div class="container text-left">
-    <div class="login-form">
-        <div class="main-div">
-            <div class="panel">
-                <h2>Detalle Pedido</h2>
-            </div>
-            <div id="Login" class="col-md-12">
-                    <div>
-                        @Html.HiddenFor(p => p.IdPedido)
-                    </div>
-                    <div class="row">
-                        <label>Nombre de Negocio: </label> @Model.NombreNegocio 
-                    </div>
-                    <div class="row">
-                        @Html.LabelFor(o => o.Usuario.Email) @Html.Raw(" : ") @Model.Usuario.Email
-                    </div>
-                    <div class="row">
-                        @Html.LabelFor(o => o.Descripcion) @Html.Raw(" : ") @Model.Descripcion
-                    </div>
-                    <div class="row">
-                        <label>Precio por unidad: </label> @Model.PrecioUnidad
-                    </div>
-                    <div class="row">
-                        <label>Precio por docena: </label> @Model.PrecioDocena
-                    </div>
-                    <div class="row">
-                        <label>Fecha de creación</label> @Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
-                    </div>
-                    <div class="row">
-                        @Html.ActionLink("Ir a Lista Pedidos", "Lista", "Pedidos")
-                        @*<input class="btn btn-danger" value="Eliminar" type="submit" />*@
-                    </div>                
-            </div>
-        </div>
-    </div>
-</div>
 
+<script type="text/javascript">
+    $('select').selectpicker();
+</script>
+@using (Html.BeginForm("CrearPedido", "Pedidos", FormMethod.Post))
+{
+
+    <div class="container">
+        <h2>Usted esta a punto de iniciar un pedido</h2>
+        <hr />
+
+        @*@Html.HiddenFor(model => model.Pedido.IdPedido)*@
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger" role="alert">
+                @Html.ValidationSummary(false)
+            </div>
+        }
+
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Nombre de negocio</label>
+                        @Html.TextBoxFor(model => model.NombreNegocio, new { @class = "form-control", placeholder = "Nombre de Negocio" })
+                        @Html.ValidationMessageFor(model => model.NombreNegocio, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-3">
+                        <label>Precio por unidad</label>
+                        @Html.TextBoxFor(model => model.PrecioUnidad, new { @class = "form-control", placeholder = "Precio por unidad" })
+                        @Html.ValidationMessageFor(model => model.PrecioUnidad, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-3">
+                        <label>Precio por docena</label>
+                        @Html.TextBoxFor(model => model.PrecioDocena, new { @class = "form-control", placeholder = "Precio por docena" })
+                        @Html.ValidationMessageFor(model => model.PrecioDocena, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-3">
+                        <label>Descripción</label>
+                        @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control", placeholder = "Descripción" })
+                        @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-4 col-lg-offset-2">
+                        <select class="selectpicker" multiple data-live-search="true" title="Seleccione gustos.." name="GustoDeEmpanadaSeleccionados">
+                            @foreach (var item in ViewBag.Lista as MultiSelectList)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2 col-lg-offset-4">
+                        <input type="reset" value="Cancelar" id="btnCancelar" class="btn btn-block btn-danger" />
+                    </div>
+                    <div class="col-md-2">
+                        <input type="submit" value="Iniciar" id="btnIniciar" class="btn btn-block btn-info" />
+                    </div>
+                </div>
+            </div>
+            <br /><br />
+        </div>
+
+    </div>
+
+}

@@ -211,6 +211,7 @@
     <Compile Include="Models\Dto\PedidoRequestDTO.cs" />
     <Compile Include="Models\Dto\UsuarioDTO.cs" />
     <Compile Include="Models\Enums\EstadoDelPedido.cs" />
+    <Compile Include="Models\Extensions\ConfirmarGusto.cs" />
     <Compile Include="Models\Extensions\Pedido.cs" />
     <Compile Include="Models\Extensions\Usuario.cs" />
     <Compile Include="Models\Metadata\PedidoMetadata.cs" />

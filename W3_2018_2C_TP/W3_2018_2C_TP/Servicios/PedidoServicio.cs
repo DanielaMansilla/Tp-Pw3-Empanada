@@ -43,7 +43,7 @@ namespace W3_2018_2C_TP.Servicios
                     invitacion.Token = Guid.NewGuid();
                     invitacion.IdUsuario = id;
                     Context.InvitacionPedido.Add(invitacion);
-                    EnviarCorreo(invitacion);
+                    //EnviarCorreo(invitacion);
                 }
             }
 
@@ -55,7 +55,7 @@ namespace W3_2018_2C_TP.Servicios
             invitacionResponsable.IdUsuario = pedido.IdUsuarioResponsable;
             Context.InvitacionPedido.Add(invitacionResponsable);
             Context.SaveChanges();
-            EnviarCorreo(invitacionResponsable);
+            //EnviarCorreo(invitacionResponsable);
             return pedido;
         }
 

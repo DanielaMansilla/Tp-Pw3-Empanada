@@ -1,7 +1,114 @@
-﻿
-@{
-    ViewBag.Title = "Elegir";
+﻿@{
+    Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
 }
 
-<h2>Pedidos Elegir</h2>
+@model Pedido
 
+
+<script type="text/javascript">
+    var dataArray = new Array();
+    $('select').selectpicker();
+    function changeOption(select) {
+        $("#cantidad").fadeIn();
+        $("#btncantidad").fadeIn();
+    }
+    function agregar() {
+        var idgusto = $("#cantidad").val();
+        var cantidad = $("#cboGustos").val();
+        dataArray.push(new Empanada(idgusto, cantidad));
+    }
+
+    function Empanada(IdGustoEmpanada, Cantidad) {
+        this.IdGustoEmpanada = IdGustoEmpanada;
+        this.Cantidad = Cantidad;
+    };
+
+    function confirmar() {
+        return $.ajax({
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        type: 'POST',
+        url: "/api/PedidosApiWeb/ConfirmarGusto",
+        data: dataArray,
+        success: function (Resultado) {
+            alert(Resultado.Resultado +" "+ Resultado.Mensaje);
+            location.reload();
+        },
+        error: function (Resultado, status, err, thrownError) {
+            alert('No se pudo efectuar la operación' +  Resultado +  err);
+        }
+        });
+    }
+
+
+</script>
+@using (Html.BeginForm("Elegir", "Pedidos", FormMethod.Post))
+{
+
+    <div class="container">
+        <h2>Usted esta a punto de iniciar un pedido</h2>
+        <hr />
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger" role="alert">
+                @Html.ValidationSummary(false)
+            </div>
+        }
+
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Nombre de negocio</label>
+                        @Html.TextBoxFor(model => model.NombreNegocio, new { @class = "form-control", placeholder = "Nombre de Negocio" })
+                        @Html.ValidationMessageFor(model => model.NombreNegocio, "", new { @class = "text-danger" })
+
+                        <label>Precio por unidad</label>
+                        @Html.TextBoxFor(model => model.PrecioUnidad, new { @class = "form-control", placeholder = "Precio por unidad" })
+                        @Html.ValidationMessageFor(model => model.PrecioUnidad, "", new { @class = "text-danger" })
+
+                    </div>
+                    <div class="col-md-3">
+                        <label>Precio por docena</label>
+                        @Html.TextBoxFor(model => model.PrecioDocena, new { @class = "form-control", placeholder = "Precio por docena" })
+                        @Html.ValidationMessageFor(model => model.PrecioDocena, "", new { @class = "text-danger" })
+
+                        <label>Descripción</label>
+                        @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control", placeholder = "Descripción" })
+                        @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-2 margin10">
+                        <div class="row">
+                            <br />
+                            <select class="selectpicker" id="cboGustos" onchange="changeOption(this)" data-live-search="true" title="Seleccione gustos.." name="GustoDeEmpanadaSeleccionados">
+                                @foreach (var item in ViewBag.Lista as MultiSelectList)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="row">
+                            <br />
+                            <input class="form-control" style="display:none" id="cantidad" placeholder="ingrese cantidad" />
+                        </div>
+                    </div>
+                    <div class="col-md-2 margin10">
+                            <br />
+                            <button type="button" class="btn btn-success" style="display:none" id="btncantidad" onclick="agregar()">Agregar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-3">
+                            <input type="reset" value="Cancelar" id="btnCancelar" class="btn  btn-danger" />
+                            <input type="submit" value="Confirmar" onclick="confirmar()" id="btnIniciar" class="btn btn-info" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+}

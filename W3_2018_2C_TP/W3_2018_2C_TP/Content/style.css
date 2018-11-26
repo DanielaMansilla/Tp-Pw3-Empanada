@@ -1271,3 +1271,7 @@ textarea.input {
         transform: translateY(40px);
     }
 }
+
+.margin10 {
+    margin-top: 10px;
+}

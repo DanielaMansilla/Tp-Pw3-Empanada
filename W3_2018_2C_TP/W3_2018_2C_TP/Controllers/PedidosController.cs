@@ -78,11 +78,11 @@ namespace W3_2018_2C_TP.Controllers
                 string url = Url.Content(Request.Url.PathAndQuery);
                 return RedirectToAction("Login", "Home", new { redirigir = url });
             }
-            if (Session["EliminarMensaje"] != null)
-            {
+           // if (Session["EliminarMensaje"] != null)
+           // {
                 List<Pedido> pedidos = _servicioPedido.ListarPedidosResponsableInvitado(SessionManager.UsuarioSession.IdUsuario);
                 return View(pedidos);
-            }
+           // }
 
             //Falta logica de redirigir a /Home/Lista cuando se loguee despues que lo pateo por aca
 
@@ -117,6 +117,7 @@ namespace W3_2018_2C_TP.Controllers
                     {
                         mailsNuevos.Add(mails[i]);
                         mails.Remove(mails[i]);
+                        break;
                     }
                 }
             }
@@ -185,15 +186,28 @@ namespace W3_2018_2C_TP.Controllers
             return RedirectToAction("Lista", "Pedidos");
         }
 
-        public ActionResult Elegir()
+        [HttpGet]
+        public ActionResult Elegir(int id)
         {
             if (SessionManager.UsuarioSession == null)
             {
                 string url = Url.Content(Request.Url.PathAndQuery);
                 return RedirectToAction("Login", "Home", new { redirigir = url });
             }
-            var gustos = _servicioGustoEmpanada.GetAll();
-            return View(gustos);
+            //var gustos = _servicioGustoEmpanada.GetAll();
+            //return View(gustos);
+            Pedido pedido = _servicioPedido.ObtenerPorId(id);
+
+            List<GustoEmpanada> InitGustos = _servicioPedido.ObtenerGustosPorPedido(id);
+            List<int> lista = new List<int>();
+
+            //foreach (GustoEmpanada item in pedido.GustoEmpanada)
+            //{
+            //    InitGustos.Remove(item);
+            //}
+            ViewBag.ListaNueva = lista;
+            ViewBag.Lista = new MultiSelectList(InitGustos, "IdGustoEmpanada", "Nombre");
+            return View(pedido);
         }
 
         [HttpGet]
@@ -216,13 +230,13 @@ namespace W3_2018_2C_TP.Controllers
                     //Lo reenvio a la lista de pedidos
                     return RedirectToAction("Lista");
                 }
-            }
-            else
-            {
-                //Falta logica de redirigir a /Pedidos/Detalle/id cuando se loguee despues que lo pateo al Login
+            //}
+           // else
+            //{
+            //    //Falta logica de redirigir a /Pedidos/Detalle/id cuando se loguee despues que lo pateo al Login
 
-                return RedirectToAction("Login", "Home");
-            }
+            //    return RedirectToAction("Login", "Home");
+            //}
             
         }
     }
