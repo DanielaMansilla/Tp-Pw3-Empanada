@@ -150,19 +150,17 @@ namespace W3_2018_2C_TP.Servicios
         /// <param name="pedido"></param>
         public void Editar(Pedido pedido)
         {
-            Pedido pedidoEditar = Context.Pedido.FirstOrDefault(o => o.IdPedido == pedido.IdPedido);
-
-            //pedidoEditar.IdUsuarioResponsable = pedido.IdUsuarioResponsable;
-            pedidoEditar.NombreNegocio = pedido.NombreNegocio;
-            pedidoEditar.Descripcion = pedido.Descripcion;
-            //pedidoEditar.IdEstadoPedido = pedido.IdEstadoPedido;
-            pedidoEditar.PrecioUnidad = pedido.PrecioUnidad;
-            pedidoEditar.PrecioDocena = pedido.PrecioDocena;
-            pedidoEditar.FechaModificacion = DateTime.Now;
-            //pedidoEditar.EstadoPedido = pedido.EstadoPedido;
-            pedidoEditar.InvitacionPedido = pedido.InvitacionPedido;
-            pedidoEditar.InvitacionPedidoGustoEmpanadaUsuario = pedido.InvitacionPedidoGustoEmpanadaUsuario;
-            pedidoEditar.Usuario = pedido.Usuario;
+            Pedido p = Context.Pedido.Find(pedido.IdPedido);
+            p.NombreNegocio = pedido.NombreNegocio;
+            p.Descripcion = pedido.Descripcion;
+            p.PrecioUnidad = pedido.PrecioUnidad;
+            p.PrecioDocena = pedido.PrecioDocena;
+            p.FechaModificacion = DateTime.Now;
+            foreach (var idGusto in pedido.GustoDeEmpanadaSeleccionados)
+            {
+                GustoEmpanada gustoEmpanadaDisponible = Context.GustoEmpanada.Find(idGusto);
+                p.GustoEmpanada.Add(gustoEmpanadaDisponible);
+            }
             Context.SaveChanges();
         }
 
@@ -192,6 +190,43 @@ namespace W3_2018_2C_TP.Servicios
             return Context.Pedido.FirstOrDefault(p => p.IdPedido == id).GustoEmpanada.ToList();
         }
 
+        public void EnviarInvitaciones(Pedido pedido, string ReEnviarInvitacion)
+        {
+            switch (ReEnviarInvitacion)
+            {
+                case "1":
+                    foreach (var item in Context.InvitacionPedido.Where(m => m.IdPedido == pedido.IdPedido))
+                    {
+                         EnviarCorreo(item);
+                    }
+                    break;
+                case "2":
+                    List<int> lista = new List<int>();
+                    foreach (var item in pedido.UsuariosSeleccionados)
+                    { 
+                        if (!Context.InvitacionPedido.Where(x => x.IdPedido == pedido.IdPedido)
+                                                     .Select(x => x.IdUsuario).Contains(item))
+                        {
+                            lista.Add(item);
+                        }
+                    }
+                    if (lista.Count() > 0)
+                    {
+                        foreach (var item in lista)
+                        {
+                            EnviarCorreo(_servicioInvitacionPedido.Crear(pedido, item));
+                        }
+                    }
+                    break;
+                case "3":
+                    foreach (var item in Context.InvitacionPedido.Where(m => m.IdPedido == pedido.IdPedido).Where(m => m.Completado == false))
+                    {
+                        EnviarCorreo(item);
+                    }
+                    break;
+            }
+        }
+
         public void EnviarCorreo(InvitacionPedido invitacion)
         {
             var fromAddress = new MailAddress("diego.gustavo.sejas2013@gmail.com", "From Name");
@@ -208,11 +243,117 @@ namespace W3_2018_2C_TP.Servicios
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                
             };
             using (var message = new MailMessage(fromAddress, toAddress)
             {
                 Subject = subject,
-                Body = body
+                Body = body,
+                IsBodyHtml = true
+            })
+            {
+                smtp.Send(message);
+            }
+        }
+
+        public void cerrarPedido(Pedido pedido)
+        {
+            Pedido p = Context.Pedido.Find(pedido.IdPedido);
+            p.FechaModificacion = DateTime.Now;
+            p.IdEstadoPedido = 2;
+            Context.SaveChanges();
+
+            foreach (var idUsuario in pedido.UsuariosSeleccionados)
+            {
+                var invitacion = Context.InvitacionPedido.Where(m => m.IdPedido == p.IdPedido)
+                                                    .Where(m => m.IdUsuario == idUsuario)
+                                                    .First();
+                EnviarMailCerrado(invitacion, pedido);
+            }
+        }
+
+        public void EnviarMailCerrado(InvitacionPedido invitacionPedido, Pedido pedido)
+        {
+            Usuario usuario = Context.Usuario.Find(invitacionPedido.IdUsuario);
+
+            int cantidadTotal = invitacionPedido.Pedido.InvitacionPedidoGustoEmpanadaUsuario.Sum(m => m.Cantidad);
+            int docenasTotales = cantidadTotal / 12;
+            int resto = cantidadTotal - (docenasTotales * 12);
+            int TotalPorDocenas = docenasTotales * invitacionPedido.Pedido.PrecioDocena;
+            int precioResto = resto * invitacionPedido.Pedido.PrecioUnidad;
+            int Total = TotalPorDocenas + precioResto;
+
+            List<String> usuarioPrecioPorAbonar = new List<String>();
+
+            foreach (var item in pedido.UsuariosSeleccionados)
+            {
+                Usuario user = Context.Usuario.Find(item);
+                int cantidadTotalesPorUsuario = user.InvitacionPedidoGustoEmpanadaUsuario
+                                                            .Where(m => m.IdUsuario == item)
+                                                            .Where(m => m.IdPedido == invitacionPedido.IdPedido)
+                                                            .Sum(m => m.Cantidad);
+                int docenasTotalesPorUsuario = cantidadTotalesPorUsuario / 12;
+                int restoPorUsuario = cantidadTotalesPorUsuario - (docenasTotalesPorUsuario * 12);
+                int RestoPorUsuario = restoPorUsuario * invitacionPedido.Pedido.PrecioUnidad;
+                int TotalPorDocenasDeUsuario = docenasTotalesPorUsuario * invitacionPedido.Pedido.PrecioDocena;
+                int TotalPorUsuario = TotalPorDocenasDeUsuario + RestoPorUsuario;
+                usuarioPrecioPorAbonar.Add("Invitado: " + user.Email + " Precio a abonar: $" + Convert.ToString(RestoPorUsuario));
+            }
+
+            List<string> detalle = new List<string>();
+
+            var newlist = invitacionPedido.Pedido.InvitacionPedidoGustoEmpanadaUsuario.GroupBy(d => d.IdGustoEmpanada)
+            .Select(
+                g => new
+                {
+                    Key = g.Key,
+                    Value = g.Sum(s => s.Cantidad),
+                    Category = g.First().GustoEmpanada,
+                    Name = g.First().GustoEmpanada.Nombre
+                });
+            foreach (var item in newlist.ToList())
+            {
+                detalle.Add(item.Name + ": " + item.Value);
+            }
+
+            var fromAddress = new MailAddress("diego.gustavo.sejas2013@gmail.com", "From Name");
+            var toAddress = new MailAddress("diego.gustavo.sejas2013@gmail.com", "To Name");
+            string fromPassword = "diegoozzy";
+            string subject = "Subject";
+            string body = "";
+
+            if (invitacionPedido.IdUsuario == invitacionPedido.Pedido.IdUsuarioResponsable)
+            {
+                body = "<h1>Rissotto</h1>Precio Total:</b> $" + Total + "<br><b>Invitados:</b><br> " +
+                    String.Join(",<br>", usuarioPrecioPorAbonar.ToArray()) + "<br><b>Detalle:</b><br>" + String.Join(",<br>", detalle.ToArray()) +
+                    "<br><b>Total de empanadas: </b>" + cantidadTotal;
+            }
+            else
+            {
+                List<string> datosInvitados = new List<string>();
+                foreach (var item in invitacionPedido.Pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(m => m.IdUsuario == invitacionPedido.IdUsuario))
+                {
+                    GustoEmpanada empanadas = Context.GustoEmpanada.Find(item.IdGustoEmpanada);
+                    datosInvitados.Add("Gusto: " + empanadas.Nombre + ", Cantidad: " + item.Cantidad);
+                }
+                body = "<h1>Rissotto</h1>Total de empanadas del pedido: " + cantidadTotal + "<br>" +
+                    String.Join(",<br>", datosInvitados.ToArray()) + "<br>Precio Total: $" + Total + "</b>";
+            }
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
+            using (var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
             })
             {
                 smtp.Send(message);

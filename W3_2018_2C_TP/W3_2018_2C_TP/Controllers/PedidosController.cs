@@ -132,7 +132,7 @@ namespace W3_2018_2C_TP.Controllers
         }
 
         [HttpPost]
-        public ActionResult Editar(Pedido pedido)
+        public ActionResult Editar(Pedido pedido, string EnviarInvitaciones, string btnConfirmar)
         {
             if (SessionManager.UsuarioSession == null)
             {
@@ -141,8 +141,11 @@ namespace W3_2018_2C_TP.Controllers
             }
             if (ModelState.IsValid)
             {
-                //Falta logica de reenvio de email dependediendo la opcion elegida en el drop down list
-
+                if (btnConfirmar == "Confirmar")
+                {
+                    _servicioPedido.cerrarPedido(pedido);
+                }
+                _servicioPedido.EnviarInvitaciones(pedido, EnviarInvitaciones);
                 _servicioPedido.Editar(pedido);
                 return RedirectToAction("Lista", "Pedidos");
             }

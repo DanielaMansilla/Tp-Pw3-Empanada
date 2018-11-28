@@ -30,6 +30,19 @@ namespace W3_2018_2C_TP.Servicios
             return idUsuarios;
         }
 
+        public InvitacionPedido Crear(Pedido pedido, int idUsuario)
+        {
+            InvitacionPedido nuevaInvitacion = new InvitacionPedido();
+            Pedido p = Contexto.Pedido.Find(pedido.IdPedido);
+            nuevaInvitacion.IdPedido = p.IdPedido;
+            nuevaInvitacion.IdUsuario = idUsuario;
+            nuevaInvitacion.Completado = false;
+            nuevaInvitacion.Token = Guid.NewGuid();
+            Contexto.InvitacionPedido.Add(nuevaInvitacion);
+            Contexto.SaveChanges();
+            return nuevaInvitacion;
+        }
+
         private List<int> GetInvitados(List<UsuarioDTO> invitados, int? idUsuarioResponsable)
         {
             List<int> idUsuarios = new List<int>();
@@ -40,7 +53,6 @@ namespace W3_2018_2C_TP.Servicios
                 if (usuario != null)
                     idUsuarios.Add(usuario.IdUsuario);
             }
-            //se agrega tambien como invitado al usuario que realizo inicio el pedido
             if (idUsuarioResponsable != null)
                 idUsuarios.Add((int)idUsuarioResponsable);
             return idUsuarios;
@@ -60,89 +72,7 @@ namespace W3_2018_2C_TP.Servicios
         public void Modificar(int idPedido, List<UsuarioDTO> invitados, int accion)
         {
             var invitacionPedidoModel = Contexto.InvitacionPedido.Where(ip => ip.IdPedido == idPedido).ToList();
-            //var invitadosModel = GetInvitados(invitados, Sesion.IdUsuario);
-            //foreach (var invitacionPedido in invitacionPedidoModel)
-            //{
-            //    if (!invitadosModel.Contains(invitacionPedido.IdUsuario))
-            //        Contexto.InvitacionPedido.Remove(invitacionPedido);
-            //}
             var nuevosInvitados = new List<int>();
-            //foreach (var invitado in invitadosModel)
-            //{
-            //    if (!invitacionPedidoModel.Select(ip => ip.IdUsuario).Contains(invitado))
-            //    {
-            //        var nuevaInvitacionPedido = new InvitacionPedido
-            //        {
-            //            IdUsuario = invitado,
-            //            IdPedido = idPedido,
-            //            Token = Guid.NewGuid(),
-            //            Completado = false
-            //        };
-            //        Contexto.InvitacionPedido.Add(nuevaInvitacionPedido);
-            //        nuevosInvitados.Add(nuevaInvitacionPedido.IdUsuario);
-            //    }
-            //}
-            //    ServicioEmail servicioMail = new ServicioEmail();
-            //    switch (accion)
-            //    {
-            //        case (int)EmailAcciones.ANadie:
-            //            break;
-            //        case (int)EmailAcciones.EnviarSoloALosNuevos:
-            //            servicioMail.ArmarMailInicioPedido(nuevosInvitados, idPedido);
-            //            break;
-            //        case (int)EmailAcciones.ReEnviarInvitacionATodos:
-            //            var todosLosInivitados = Contexto.InvitacionPedido.Where(ip => ip.IdPedido == idPedido)
-            //                .Select(i => i.IdUsuario)
-            //                .ToList();
-            //            servicioMail.ArmarMailInicioPedido(todosLosInivitados, idPedido);
-            //            break;
-            //        case (int)EmailAcciones.ReEnviarSoloALosQueNoEligieronGustos:
-            //            var invitadosSinGustos = Contexto.InvitacionPedido.Where(ip => ip.IdPedido == idPedido
-            //                                                                    && ip.Completado == false)
-            //                .Select(i => i.IdUsuario)
-            //                .ToList();
-            //            servicioMail.ArmarMailInicioPedido(invitadosSinGustos, idPedido);
-            //            break;
-            //    }
-            //    Contexto.SaveChanges();
-            //}
-
-            //public bool ConfirmarGustos(PedidoRequestDTO pedido)
-            //{
-            //    try
-            //    {
-            //        var listaDeGustosPorUsuario = Contexto.InvitacionPedidoGustoEmpanadaUsuario.Where(ip => ip.IdPedido == pedido.IdPedido && ip.IdUsuario == pedido.IdUsuario).ToList();
-
-            //        foreach (InvitacionPedidoGustoEmpanadaUsuario inv in listaDeGustosPorUsuario)
-            //        {
-            //            Contexto.InvitacionPedidoGustoEmpanadaUsuario.Remove(inv);
-            //        }
-
-            //        foreach (GustoEmpanadasCantidadDTO g in pedido.GustoEmpanadasCantidad)
-            //        {
-
-            //            if (g.Cantidad > 0)
-            //            {
-            //                Contexto.InvitacionPedidoGustoEmpanadaUsuario.Add(new InvitacionPedidoGustoEmpanadaUsuario
-            //                {
-            //                    Cantidad = g.Cantidad,
-            //                    IdGustoEmpanada = g.IdGustoEmpanada,
-            //                    IdPedido = pedido.IdPedido,
-            //                    IdUsuario = pedido.IdUsuario,
-            //                });
-            //            }
-
-            //        }
-
-            //        Contexto.SaveChanges();
-
-            //        return true;
-            //    }
-            //    catch
-            //    {
-            //        return false;
-            //    }
-            //}
         }
         public bool ValidarGustos(ConfirmarGusto datos)
         {
@@ -178,10 +108,6 @@ namespace W3_2018_2C_TP.Servicios
 
         public List<Usuario> obtenerGustosConfirmados(int idPedido)
         {
-            //List<InvitacionPedido> imvitacionesDelUsuario = Context.InvitacionPedido.Include("Pedido")
-            //  .Where(o => o.IdUsuario == idUsuario).ToList();
-            //return Contexto.Usuario.Include("InvitacionPedidoGustoEmpanadaUsuario")
-            //               .Where(p => p.IdPedido == idPedido).ToList();
             List<InvitacionPedido> invitacionesDelUsuario = Contexto.InvitacionPedido.Include("Pedido")
               .Where(o => o.IdPedido == idPedido).ToList();
             List<Usuario> usuarios = Contexto.Usuario.ToList();
