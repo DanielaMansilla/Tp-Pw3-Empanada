@@ -51,7 +51,24 @@
             </div>
             <div class="form-group">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                        <table id="tabla" class="table table-striped">
+                            <thead>
+                                <tr class="bg-warning">
+                                    <th>Usuario que confirmaron gustos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var p in ViewBag.GustosElegidos)
+                                {
+                                    <tr>
+                                        <td>@p.Email</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-3">
                         <select class="selectpicker" multiple data-live-search="true" title="Seleccione gustos.." name="GustoDeEmpanadaSeleccionados">
                             @foreach (var item in Model.GustoEmpanada)
                             {
@@ -63,7 +80,7 @@
                             }
                         </select>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <select class="selectpicker" multiple data-live-search="true" title="Seleccione invitados.." name="UsuariosSeleccionados">
                             @foreach (var item in ViewBag.Mailseleccionados as MultiSelectList)
                             {
@@ -75,7 +92,7 @@
                             }
                         </select>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <select class="selectpicker" data-live-search="true" title="Re-enviar invitación.." name="UsuariosSeleccionados">
                             <option value="0">A Nadie</option>
                             <option value="1">Re - enviar Invitación a Todos</option>

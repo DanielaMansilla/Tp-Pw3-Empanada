@@ -1,61 +1,53 @@
-﻿@{
+﻿
+@{
     Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
 }
-
 @model Pedido
 
 
 <script type="text/javascript">
     $('select').selectpicker();
 </script>
-@using (Html.BeginForm("CrearPedido", "Pedidos", FormMethod.Post))
-{
 
     <div class="container">
-        <h2>Usted esta a punto de iniciar un pedido</h2>
+        <h2>Detalle del pedido</h2>
         <hr />
-
-        @*@Html.HiddenFor(model => model.Pedido.IdPedido)*@
-        @if (!ViewData.ModelState.IsValid)
-        {
-            <div class="alert alert-danger" role="alert">
-                @Html.ValidationSummary(false)
-            </div>
-        }
-
-
         <div class="col-md-12">
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-3">
                         <label>Nombre de negocio</label>
-                        @Html.TextBoxFor(model => model.NombreNegocio, new { @class = "form-control", placeholder = "Nombre de Negocio" })
-                        @Html.ValidationMessageFor(model => model.NombreNegocio, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.NombreNegocio, new { @class = "form-control", placeholder = "Nombre de Negocio" })
                     </div>
                     <div class="col-md-3">
                         <label>Precio por unidad</label>
-                        @Html.TextBoxFor(model => model.PrecioUnidad, new { @class = "form-control", placeholder = "Precio por unidad" })
-                        @Html.ValidationMessageFor(model => model.PrecioUnidad, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.PrecioUnidad, new { @class = "form-control", placeholder = "Precio por unidad" })
                     </div>
                     <div class="col-md-3">
                         <label>Precio por docena</label>
-                        @Html.TextBoxFor(model => model.PrecioDocena, new { @class = "form-control", placeholder = "Precio por docena" })
-                        @Html.ValidationMessageFor(model => model.PrecioDocena, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.PrecioDocena, new { @class = "form-control", placeholder = "Precio por docena" })
                     </div>
                     <div class="col-md-3">
                         <label>Descripción</label>
-                        @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control", placeholder = "Descripción" })
-                        @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.Descripcion, new { @class = "form-control", placeholder = "Descripción" })
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="row">
-                    <div class="col-md-4 col-lg-offset-2">
+                    <div class="col-md-4">
                         <select class="selectpicker" multiple data-live-search="true" title="Seleccione gustos.." name="GustoDeEmpanadaSeleccionados">
-                            @foreach (var item in ViewBag.Lista as MultiSelectList)
+                            @foreach (var item in Model.GustoEmpanada)
                             {
-                                <option value="@item.Value">@item.Text</option>
+                                <option value="@item.IdGustoEmpanada" selected>@item.Nombre</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="selectpicker" multiple data-live-search="true" title="Seleccione invitados.." name="UsuariosSeleccionados">
+                            @foreach (var item in ViewBag.Mailseleccionados as MultiSelectList)
+                            {
+                                <option value="@item.Value" selected>@item.Text</option>
                             }
                         </select>
                     </div>
@@ -63,11 +55,8 @@
             </div>
             <div class="form-group">
                 <div class="row">
-                    <div class="col-md-2 col-lg-offset-4">
-                        <input type="reset" value="Cancelar" id="btnCancelar" class="btn btn-block btn-danger" />
-                    </div>
-                    <div class="col-md-2">
-                        <input type="submit" value="Iniciar" id="btnIniciar" class="btn btn-block btn-info" />
+                    <div class="col-md-2 col-lg-offset-3">
+                        @Html.ActionLink("Ir a la lista de Pedidos", "Lista", "Pedidos", null, new { @class = "btn btn-block btn-danger" })
                     </div>
                 </div>
             </div>
@@ -75,5 +64,3 @@
         </div>
 
     </div>
-
-}

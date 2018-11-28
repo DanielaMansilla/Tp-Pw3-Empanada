@@ -121,19 +121,14 @@ namespace W3_2018_2C_TP.Controllers
                     }
                 }
             }
+            List<Usuario> gustosElegidos = _servicioInvitacionPedido.obtenerGustosConfirmados(id);
 
-            if (pedido.EstadoPedido.Nombre == "Cerrado")
-            {
-                return RedirectToAction("Detalle", "Pedidos", pedido.IdPedido);
-            }
-            else
-            {
-                ViewBag.Lista = new MultiSelectList(InitGustos, "IdGustoEmpanada", "Nombre");
-                ViewBag.Mails = new MultiSelectList(mails, "IdUsuario", "Email");
-                ViewBag.Mailseleccionados = new MultiSelectList(mailsNuevos, "IdUsuario", "Email");
+            ViewBag.GustosElegidos = gustosElegidos;
+            ViewBag.Lista = new MultiSelectList(InitGustos, "IdGustoEmpanada", "Nombre");
+            ViewBag.Mails = new MultiSelectList(mails, "IdUsuario", "Email");
+            ViewBag.Mailseleccionados = new MultiSelectList(mailsNuevos, "IdUsuario", "Email");
 
-                return View(pedido);
-            }
+            return View(pedido);
         }
 
         [HttpPost]
@@ -211,26 +206,36 @@ namespace W3_2018_2C_TP.Controllers
                 string url = Url.Content(Request.Url.PathAndQuery);
                 return RedirectToAction("Login", "Home", new { url });
             }
-            Pedido p = _servicioPedido.ObtenerPorId(id);
+            Pedido pedido = _servicioPedido.ObtenerPorId(id);
 
-                if (p.EstadoPedido.Nombre == "Cerrado" || p.IdUsuarioResponsable != SessionManager.UsuarioSession.IdUsuario)
+            List<GustoEmpanada> InitGustos = _servicioPedido.ObtenerGustos();
+
+            foreach (GustoEmpanada item in pedido.GustoEmpanada)
+            {
+                InitGustos.Remove(item);
+            }
+
+            List<Usuario> mails = _servicioUsuario.obtenerMailsUsuarios();
+            List<Usuario> mailsNuevos = new List<Usuario>();
+
+            for (int i = 0; i < mails.Count; i++)
+            {
+                foreach (InvitacionPedido item in pedido.InvitacionPedido)
                 {
-                    return View(p);
+                    if (mails[i].IdUsuario == item.IdUsuario && item.IdUsuario != SessionManager.UsuarioSession.IdUsuario)
+                    {
+                        mailsNuevos.Add(mails[i]);
+                        mails.Remove(mails[i]);
+                        break;
+                    }
                 }
+            }
 
-                else
-                {
-                    //Lo reenvio a la lista de pedidos
-                    return RedirectToAction("Lista");
-                }
-            //}
-           // else
-            //{
-            //    //Falta logica de redirigir a /Pedidos/Detalle/id cuando se loguee despues que lo pateo al Login
+            ViewBag.Lista = new MultiSelectList(InitGustos, "IdGustoEmpanada", "Nombre");
+            ViewBag.Mailseleccionados = new MultiSelectList(mailsNuevos, "IdUsuario", "Email");
 
-            //    return RedirectToAction("Login", "Home");
-            //}
-            
+            return View(pedido);
+
         }
 
         [HttpGet]

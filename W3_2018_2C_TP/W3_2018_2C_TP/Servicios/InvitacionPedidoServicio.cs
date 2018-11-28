@@ -30,11 +30,6 @@ namespace W3_2018_2C_TP.Servicios
             return idUsuarios;
         }
 
-        public InvitacionPedidoGustoEmpanadaUsuario ElegirGustos()
-        {
-            return null;
-        }
-
         private List<int> GetInvitados(List<UsuarioDTO> invitados, int? idUsuarioResponsable)
         {
             List<int> idUsuarios = new List<int>();
@@ -165,6 +160,41 @@ namespace W3_2018_2C_TP.Servicios
             {
                 return false;
             }
+        }
+
+        public void ConfirmarGustos(ConfirmarGusto datos)
+        {
+            int idpedido = Contexto.InvitacionPedido
+                            .Where(p => p.Token == datos.Token)
+                            .Select(p => p.IdPedido).First();
+            foreach (InvitacionPedidoGustoEmpanadaUsuario item in datos.GustosEmpanadasCantidad)
+            {
+                item.IdPedido = idpedido;
+                item.IdUsuario = datos.IdUsuario;
+                Contexto.InvitacionPedidoGustoEmpanadaUsuario.Add(item);
+                Contexto.SaveChanges();
+            }
+        }
+
+        public List<Usuario> obtenerGustosConfirmados(int idPedido)
+        {
+            //List<InvitacionPedido> imvitacionesDelUsuario = Context.InvitacionPedido.Include("Pedido")
+            //  .Where(o => o.IdUsuario == idUsuario).ToList();
+            //return Contexto.Usuario.Include("InvitacionPedidoGustoEmpanadaUsuario")
+            //               .Where(p => p.IdPedido == idPedido).ToList();
+            List<InvitacionPedido> invitacionesDelUsuario = Contexto.InvitacionPedido.Include("Pedido")
+              .Where(o => o.IdPedido == idPedido).ToList();
+            List<Usuario> usuarios = Contexto.Usuario.ToList();
+            int i = 0;
+            foreach (InvitacionPedido item in invitacionesDelUsuario)
+            {
+                if (usuarios[i].IdUsuario != item.IdUsuario)
+                {
+                    usuarios.RemoveAt(i);
+                    i++;
+                }
+            }
+            return usuarios;
         }
     }
 
