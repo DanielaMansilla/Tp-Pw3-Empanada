@@ -17,6 +17,12 @@ namespace W3_2018_2C_TP.Servicios
             return estado;
         }
 
+        public List<Usuario> obtenerMailsUsuarios(string Email)
+        {
+            return Context.Usuario
+                .Where(e => e.Email != Email)
+                .ToList();
+        }
         public List<Usuario> obtenerMailsUsuarios()
         {
             return Context.Usuario.ToList();

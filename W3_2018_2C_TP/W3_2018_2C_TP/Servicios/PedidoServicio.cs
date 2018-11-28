@@ -85,10 +85,7 @@ namespace W3_2018_2C_TP.Servicios
         /// <returns> List<Pedido> </returns>
         public List<Pedido> ListarPedidosResponsableInvitado(int idUsuario)
         {
-            // forma corta
-            //List<Pedido> pedidos = Context.InvitacionPedido.Include("Pedido")
-            //                .Where(o => o.IdUsuario == idUsuario)
-            //                .Select(i => i.Pedido).ToList();
+
 
             List<Pedido> pedidosResultado = new List<Pedido>();
 

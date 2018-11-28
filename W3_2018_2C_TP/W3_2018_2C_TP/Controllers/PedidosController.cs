@@ -27,13 +27,14 @@ namespace W3_2018_2C_TP.Controllers
                 return RedirectToAction("Login", "Home", new { url });  
             }
             List<GustoEmpanada> listaGustos = _servicioGustoEmpanada.GetAll();
-            var mails = _servicioUsuario.obtenerMailsUsuarios();
+            var mails = _servicioUsuario.obtenerMailsUsuarios(SessionManager.UsuarioSession.Email);
 
             ViewBag.Lista = new MultiSelectList(listaGustos, "IdGustoEmpanada", "Nombre");
             ViewBag.Mails = new MultiSelectList(mails, "IdUsuario", "Email");
 
             return View();
         }
+
         [HttpPost]
         public ActionResult CrearPedido(Pedido pedido)
         {
@@ -78,15 +79,9 @@ namespace W3_2018_2C_TP.Controllers
                 string url = Url.Content(Request.Url.PathAndQuery);
                 return RedirectToAction("Login", "Home", new { url });
             }
-           // if (Session["EliminarMensaje"] != null)
-           // {
-                List<Pedido> pedidos = _servicioPedido.ListarPedidosResponsableInvitado(SessionManager.UsuarioSession.IdUsuario);
-                return View(pedidos);
-           // }
-
-            //Falta logica de redirigir a /Home/Lista cuando se loguee despues que lo pateo por aca
-
-            return RedirectToAction("Login", "Home");
+           
+            List<Pedido> pedidos = _servicioPedido.ListarPedidosResponsableInvitado(SessionManager.UsuarioSession.IdUsuario);
+            return View(pedidos);
         }
 
         [HttpGet]
