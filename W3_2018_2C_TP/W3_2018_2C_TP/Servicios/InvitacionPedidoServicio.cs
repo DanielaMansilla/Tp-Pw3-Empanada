@@ -108,18 +108,18 @@ namespace W3_2018_2C_TP.Servicios
 
         public List<Usuario> obtenerGustosConfirmados(int idPedido)
         {
-            List<InvitacionPedido> invitacionesDelUsuario = Contexto.InvitacionPedido.Include("Pedido")
-              .Where(o => o.IdPedido == idPedido).ToList();
+            //List<InvitacionPedido> invitacionesDelUsuario = Contexto.InvitacionPedido.Include("Pedido")
+            //  .Where(o => o.IdPedido == idPedido).ToList();
             List<Usuario> usuarios = Contexto.Usuario.ToList();
-            int i = 0;
-            foreach (InvitacionPedido item in invitacionesDelUsuario)
-            {
-                if (usuarios[i].IdUsuario != item.IdUsuario)
-                {
-                    usuarios.RemoveAt(i);
-                    i++;
-                }
-            }
+            //int i = 0;
+            //foreach (InvitacionPedido item in invitacionesDelUsuario)
+            //{
+            //    if (usuarios[i].IdUsuario != item.IdUsuario)
+            //    {
+            //        usuarios.RemoveAt(i);
+            //        i++;
+            //    }
+            //}
             return usuarios;
         }
     }

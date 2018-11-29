@@ -43,7 +43,7 @@ namespace W3_2018_2C_TP.Servicios
                     invitacion.Token = Guid.NewGuid();
                     invitacion.IdUsuario = id;
                     Context.InvitacionPedido.Add(invitacion);
-                    //EnviarCorreo(invitacion);
+                    EnviarCorreo(invitacion, "Notificación de invitación");
                 }
             }
 
@@ -55,7 +55,7 @@ namespace W3_2018_2C_TP.Servicios
             invitacionResponsable.IdUsuario = pedido.IdUsuarioResponsable;
             Context.InvitacionPedido.Add(invitacionResponsable);
             Context.SaveChanges();
-            //EnviarCorreo(invitacionResponsable);
+            EnviarCorreo(invitacionResponsable,"Notificación de Pedido");
             return pedido;
         }
 
@@ -187,50 +187,68 @@ namespace W3_2018_2C_TP.Servicios
             return Context.Pedido.FirstOrDefault(p => p.IdPedido == id).GustoEmpanada.ToList();
         }
 
-        public void EnviarInvitaciones(Pedido pedido, string ReEnviarInvitacion)
+        public void EnviarInvitaciones(Pedido pedido, string ReEnviarInvitacion, List<Usuario> mails)
         {
             switch (ReEnviarInvitacion)
             {
                 case "1":
                     foreach (var item in Context.InvitacionPedido.Where(m => m.IdPedido == pedido.IdPedido))
                     {
-                         EnviarCorreo(item);
+                         EnviarCorreo(item,"Re envio de Notificación de pedido");
                     }
                     break;
                 case "2":
                     List<int> lista = new List<int>();
+
                     foreach (var item in pedido.UsuariosSeleccionados)
-                    { 
-                        if (!Context.InvitacionPedido.Where(x => x.IdPedido == pedido.IdPedido)
-                                                     .Select(x => x.IdUsuario).Contains(item))
+                    {
+                        //var valor = from u in Context.InvitacionPedido
+                        //                                where u.IdPedido == pedido.IdPedido
+                        //                                where u.IdUsuario == item
+                        //                                select u;
+
+                        List<InvitacionPedido> invitaciones = Context.InvitacionPedido
+                                                                .Where(x => x.IdPedido == pedido.IdPedido)
+                                                                .Where(x => x.IdUsuario != SessionManager.UsuarioSession.IdUsuario)
+                                                                .ToList();
+                        foreach (InvitacionPedido inv in invitaciones)
                         {
-                            lista.Add(item);
+                            if (inv.IdUsuario != item)
+                            {
+                                lista.Add(item);
+                            }
                         }
+                        //if (valor. == null)
+                        //{
+                        //    lista.Add(mails[item - 1].IdUsuario);
+                        //}
+                       
                     }
                     if (lista.Count() > 0)
                     {
                         foreach (var item in lista)
                         {
-                            EnviarCorreo(_servicioInvitacionPedido.Crear(pedido, item));
+                            EnviarCorreo(_servicioInvitacionPedido.Crear(pedido, item),"Notificación de invitación de pedido");
                         }
                     }
                     break;
                 case "3":
                     foreach (var item in Context.InvitacionPedido.Where(m => m.IdPedido == pedido.IdPedido).Where(m => m.Completado == false))
                     {
-                        EnviarCorreo(item);
+                        EnviarCorreo(item, "Re envio de solicitud de elección de gusto");
                     }
                     break;
             }
         }
 
-        public void EnviarCorreo(InvitacionPedido invitacion)
+        public void EnviarCorreo(InvitacionPedido invitacion, string MensajeNotificacion)
         {
-            var fromAddress = new MailAddress("diego.gustavo.sejas2013@gmail.com", "From Name");
-            var toAddress = new MailAddress("diego.gustavo.sejas2013@gmail.com", "To Name");
+            var fromAddress = new MailAddress("diego.gustavo.sejas2013@gmail.com", "Diego");
+            Usuario usuario = Context.Usuario.Where(u => u.IdUsuario == invitacion.IdUsuario).First();
+            var toAddress = new MailAddress(usuario.Email, usuario.Email);
             string fromPassword = "diegoozzy";
-            string subject = "Subject";
-            string body = "<h1>Risitto Empanadas</h1><br> Invitacion: " + HttpContext.Current.Request.Url.Authority + "/pedidos/elegir/" + invitacion.Token;
+            string subject = MensajeNotificacion;
+            string body = "<h1>Risotto Empanadas</h1><br> Invitacion: Http://" + HttpContext.Current.Request.Url.Authority + "/pedidos/elegir/" + invitacion.Token;
 
             var smtp = new SmtpClient
             {

@@ -35,7 +35,7 @@
                             }
                         </td>
                         <td>
-                            @if (p.EstadoPedido.Nombre == "Abierto")
+                            @if (p.EstadoPedido.Nombre == "Abierto" && p.IdUsuarioResponsable == SessionManager.UsuarioSession.IdUsuario)
                             {
                                 <a href="/Pedidos/Editar/@p.IdPedido" class="btn btn-info">Editar</a>
                                 <a href="/Pedidos/Copiar/@p.IdPedido" class="btn btn-default">Copiar</a>
@@ -47,7 +47,6 @@
                                 <a href="/Pedidos/Detalle/@p.IdPedido" class="btn btn-info">Detalle</a>
                                 <a href="/Pedidos/Copiar/@p.IdPedido" class="btn btn-default">Copiar</a>
                                 <a href="/Pedidos/Elegir/@p.IdPedido" class="btn btn-success">Elegir</a>
-                                <a href="/Pedidos/Eliminar/@p.IdPedido" class="btn btn-danger">Eliminar</a>
                             }
                         </td>
                     </tr>

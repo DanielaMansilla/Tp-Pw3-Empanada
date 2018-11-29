@@ -26,6 +26,7 @@ namespace W3_2018_2C_TP.Controllers
                 string url = Url.Content(Request.Url.PathAndQuery);
                 return RedirectToAction("Login", "Home", new { url });  
             }
+
             List<GustoEmpanada> listaGustos = _servicioGustoEmpanada.GetAll();
             var mails = _servicioUsuario.obtenerMailsUsuarios(SessionManager.UsuarioSession.Email);
 
@@ -117,7 +118,7 @@ namespace W3_2018_2C_TP.Controllers
                 }
             }
             List<Usuario> gustosElegidos = _servicioInvitacionPedido.obtenerGustosConfirmados(id);
-
+            Session["mails"] = mails;
             ViewBag.GustosElegidos = gustosElegidos;
             ViewBag.Lista = new MultiSelectList(InitGustos, "IdGustoEmpanada", "Nombre");
             ViewBag.Mails = new MultiSelectList(mails, "IdUsuario", "Email");
@@ -140,7 +141,8 @@ namespace W3_2018_2C_TP.Controllers
                 {
                     _servicioPedido.cerrarPedido(pedido);
                 }
-                _servicioPedido.EnviarInvitaciones(pedido, EnviarInvitaciones);
+                List<Usuario> mails = Session["mails"] as List<Usuario>;
+                _servicioPedido.EnviarInvitaciones(pedido, EnviarInvitaciones, mails);
                 _servicioPedido.Editar(pedido);
                 return RedirectToAction("Lista", "Pedidos");
             }
@@ -269,18 +271,13 @@ namespace W3_2018_2C_TP.Controllers
                 }
             }
 
-            if (pedido.EstadoPedido.Nombre == "Cerrado")
-            {
-                return RedirectToAction("Detalle", "Pedidos", pedido.IdPedido);
-            }
-            else
-            {
-                ViewBag.Lista = new MultiSelectList(InitGustos, "IdGustoEmpanada", "Nombre");
-                ViewBag.Mails = new MultiSelectList(mails, "IdUsuario", "Email");
-                ViewBag.Mailseleccionados = new MultiSelectList(mailsNuevos, "IdUsuario", "Email");
+            
+            ViewBag.Lista = new MultiSelectList(InitGustos, "IdGustoEmpanada", "Nombre");
+            ViewBag.Mails = new MultiSelectList(mails, "IdUsuario", "Email");
+            ViewBag.Mailseleccionados = new MultiSelectList(mailsNuevos, "IdUsuario", "Email");
 
-                return View(pedido);
-            }
+            return View(pedido);
+
         }
     }
   
